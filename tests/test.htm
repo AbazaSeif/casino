@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Tests!</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<style type="text/css">
+table{ border-spacing:0; border-collapse:collapse; margin:0 auto; width:1000px;}
+td, th{ border:1px solid black; padding:2px; text-align:left;}
+#summary{ text-align: center; }
+.passed td:nth-child(3) { background-color:darkgreen; }
+.failed td:nth-child(3) { background-color:darkred; }
+</style>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="../assets/js/array.js"></script>
+<script src="../assets/js/sprite.js"></script>
+<script src="../assets/js/game.js"></script>
+<script src="../assets/js/blackjack.js"></script>
+<script src="../assets/js/hilow.js"></script>
+<script src="../assets/js/solitaire.js"></script>
+<script src="../assets/js/index.js"></script>
+<script type="text/javascript">
+/** 
+ * each test script adds to this
+ * expecting :
+ * { 
+ *  module: 'moduleName',
+ *  tests: [
+ *    {
+ *      name: 'name of test'
+ *      condition: Boolean,
+ *      message: 'message of failure'
+ *    }
+ *  ]
+ */ 
+var tests = [];
+</script>
+<script type="text/javascript" src="sprites.test.js"></script>
+<script type="text/javascript">
+$(function(){ 
+  
+  var total = passed = 0;
+  
+  // iterate through all the tests, if condition is false return message.
+  $.each(tests, function(test_index, test_value) {
+    
+    var module = test_value.module;
+    var returns = test_value.tests.call();
+    
+    $.each(returns, function(return_index, return_value) {
+      total++;
+      if (return_value.condition) passed++;      
+      $("#results").append(
+        $("<tr></tr>")
+          .addClass(return_value.condition ? "passed" : "failed")
+          .append("<td>" + module + "</td>")
+          .append("<td>" + return_value.name + "</td>")
+          .append("<td>" + (return_value.condition ? "Passed" : return_value.message) + "</td>")
+      );
+    
+    });
+    
+  });
+  
+  $("#summary").html("Of "+total+" tests, "+(total-passed)+" failed and "+passed+" passed")
+  
+});
+</script>
+</head>
+<body>
+<table>
+<thead>
+<tr>
+<th colspan="3" id="summary">Summary</th>
+</tr>
+<tr>
+<th width="10%">Module</th>
+<th width="40%">Test Name</th>
+<th width="40%">Result</th>
+</tr>
+<tbody id='results'>
+</tbody>
+</table>
+<div id="other"></div>
+</body>
+</html>
