@@ -1,0 +1,4 @@
+/* for non-js browsers we want to make this as obvious as possible */
+.no-js { display:none; }
+noscript { color:red; font-weight:bold; }
+
