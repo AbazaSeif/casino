@@ -53,36 +53,19 @@
 ;(function($){
 
 
-window['Sprite'] = function (schema) {
-
-  // perform some validations on the schema argument - check both for presence of properties and their types
-  [
+window['Sprite'] = function Sprite(schema) {
+  
+  // call our validation function - this puts all the values on [this]
+  FunctionValidation(this, schema, [
     {name: 'filename', type: String},
     {name: 'id', type: String},
     {name: 'row_id', type: String},
-    {name: 'row_data', type: Array},
+    {name: 'row_data', type: Array, arrayType: String},
     {name: 'row_height', type: Number},
     {name: 'col_id', type: String},
-    {name: 'col_data', type: Array},
+    {name: 'col_data', type: Array, arrayType: String},
     {name: 'col_width', type: Number}
-  ].forEach(function(element, index, array) {
-  
-    // check that the passed parameter is present in the argument at all, throw exception if not.
-    if (typeof schema[element.name] === 'undefined') {
-      throw new TypeError("Exception in Sprite(): " + element.name + " was not provided!");
-    }
-    
-    // check that the passed parameter is of the correct type, throw exception if not
-    // todo: verify this works in other browsers... I'm looking at you IE<=8
-    else if (!(schema[element.name].constructor === element.type)) {
-      throw new TypeError("Exception in Sprite(): " + element.name + " was not the valid type. Expecting: " + element.type.name);
-    }
-    
-    // if the property is both present and of the correct type, add it to [this]
-    else {
-      this[element.name] = schema[element.name];
-    }
-  }, this);
+  ]);
 
   // with that out of the way, we can start to build the css classes and append to the page.
   // start with the general id declaration adding the filename as the background and the height/width of each sprite
