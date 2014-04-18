@@ -7,9 +7,6 @@ sass_dir = "stylesheets"
 images_dir = "../../img"
 javascripts_dir = "../../js"
 
-# Add in our monkey patch to remove all comments
-require "./remove-comments-monkey-patch"
-
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed
 output_style = :compressed
