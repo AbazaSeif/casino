@@ -42,13 +42,13 @@
 
       // check that the passed parameter is of the correct type, throw exception if not
       // todo: verify this works in other browsers... I'm looking at you IE<=10
-      else if (!(inputs[element.name].constructor === element.type)) {
+      else if (!(inputs[element.name].constructor === element.type || inputs[element.name] instanceof element.type )) {
         throw new TypeError("Exception in "+ caller +"(): " + element.name + " was not the valid type. Expecting: " + element.type.name);
       }
 
       // when constructor is array, check for presence of arrayType and compare all elements against it
       else if (element.type === Array && typeof element.arrayType !== 'undefined' && 
-        inputs[element.name].filter(function(value){ return value.constructor !== element.arrayType }).length > 0) {
+        inputs[element.name].filter(function(value){ return !(value.constructor === element.arrayType || value.constructor instanceof element.arrayType) }).length > 0) {
         throw new TypeError("Exception in " + caller + "(): " + element.name +" is an array type but not all elements were of type " + element.arrayType.name);
       }
 
