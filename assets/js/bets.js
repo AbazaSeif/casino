@@ -22,9 +22,12 @@
    * Bets
    * Keeps track of users' winnings.
    * Provides user interface for increasing/decreasing bets.
+   *
+   * @param initial
+   * The amount to start off with, defaults to 100
    */
-  window["Bets"] = function Bets () {
-    this.winnings = 100;
+  window["Bets"] = function Bets (initial) {
+    this.winnings = initial || 100;
     this.currentBet = null;
     this.name = "sample-bets";
   }
@@ -43,7 +46,11 @@
   
   /**
    * Bets.prototype.finish
-   * Function used to signify a bet has been set.
+   * Used to signify a bet has been set.  Must call callback set in 'start'.
+   * 
+   * @remarks 
+   *  This is a jQuery event. Assuming e.data.bets includes a reference to [this]
+   *
    */
   Bets.prototype.finish = function (e) {
     var bets = e.data.bets;
@@ -73,6 +80,7 @@
    */
   Bets.prototype.abort = function () {
     this.currentBet = null;
+    this.betsCallback = null;
     $("#bet-error").html("");
     $("#current-bet-interface").css('display', 'none');
   }

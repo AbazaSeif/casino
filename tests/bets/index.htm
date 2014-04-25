@@ -4,67 +4,44 @@
 <title>Initial Bets Mockup</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" href="../../assets/css/style.css" />
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="../../assets/js/array.js"></script>
+<script src="../../assets/js/lib.js"></script>
+<script src="../../assets/js/sprite.js"></script>
+<script src="../../assets/js/bets.js"></script>
+<script src="../../assets/js/game.js"></script>
+<script src="../../assets/js/game-interface.js"></script>
+<script src="../../assets/js/blackjack.js"></script>
+<script src="../../assets/js/hilow.js"></script>
+<script src="../../assets/js/solitaire.js"></script>
+<script src="js/chips.js"></script>
 <script type="text/javascript">
-$(function(){
-  // fix up the height until browsers support attr in calc 
-  $("[data-count]").each(function(){
-    $(this).css('height', ($(this).attr('data-count') - 1) * 9 + 'px');
+
+$(function() {
+  
+  var chips = new Chips(325);
+  chips.imgRoot = "img/";
+
+  // create a new game interface.
+  var game = new GameInterface({
+    'output': $("#output")[0],
+    'games': [
+      new Game()
+    ],
+    'bets': chips
   });
-})
+  
+  chips.update();
+
+});
+
+
 </script>
-<style type="text/css">
-
-body{ background:grey; }
-
-.stack[data-count]{  
-  position:relative; 
-  background-image: url(img/top.png), url(img/middle.png), url(img/bottom.png);
-  background-position: top center, center 27px, bottom center;
-  background-repeat: no-repeat, repeat, no-repeat;
-  background-origin: border-box, padding-box, border-box;
-  background-clip: border-box, padding-box, border-box;  
-  border-top: 26px solid transparent;
-  border-bottom: 13px solid transparent;
-  width: 75px;
-  display:inline-block;
-  /* browsers - y u make me use jquery for this?! 
-  height: calc((attr(data-count integer 0) - 1) * 9px);
-  */
-}
-
-/*trying to get mask/clipings working
-  this is an exercise in futiliy.
-.stack {
-  mask: url(mask.svg#chip-mask);
-}
-*/
-
-div.stack[data-value]:before{ 
-  position:absolute;
-  top: -22px;
-  display:block; 
-  width: 75px; 
-  background-color: transparent !important; /* we set bgcolor below, use important to ensure it is transparent */
-  content:attr(data-value); 
-  transform: rotate(20deg); 
-  -webkit-transform: rotate(20deg); 
-  text-align:center;
-  font-size:1.2em;
-  z-index:1;
-}
-
-  .stack[data-value="5"],   .stack[data-value="5"]:before { background-color: #c00; color: #000; }
- .stack[data-value="25"],  .stack[data-value="25"]:before { background-color: #0c0; color: #000; }
-.stack[data-value="100"], .stack[data-value="100"]:before { background-color: #222; color: #fd0; }
-
-</style>
 </head>
 <body>
 
-<div class="stack" data-value="5" data-count="15"></div>
-<div class="stack" data-value="25" data-count="20"></div>
-<div class="stack" data-value="100" data-count="15"></div>
+<div id="output"></div>
 
 </body>
 </html>
