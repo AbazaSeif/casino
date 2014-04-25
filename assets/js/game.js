@@ -129,7 +129,7 @@
    */ 
   Game.prototype.output = function () {
     var game = this;
-    var $game = $("<fieldset class='game'></fieldset>")
+    var $game = $("<fieldset class='"+ this.name +"'></fieldset>")
       .append("<legend>" + this.label + "</legend>")
       .append( function () {
         var ret = $("<div class='commands'></div>")
@@ -156,19 +156,19 @@
    */
   Game.prototype.css = function() {
     var css = '';
-    css += '.game { display:none; }';
-    css += '.game.init { display:inherit; }';
-    css += '.game.init .interface{ display:none; }';
-    css += '.game.init .start{ display:inherit; }';
-    css += '.game.betting { display:inherit; }';
-    css += '.game.betting .interface { display:none; }';
-    css += '.game.betting .start { display:none; }';
-    css += '.game.playing { display:inherit; }';
-    css += '.game.playing .interface { display:inherit; }';
-    css += '.game.playing .start { display:none; }';
-    css += '.game.bust { display:inherit; }';
-    css += '.game.bust .start{ display:none; }';
-    css += '.game.bust .interface{ display:none; }';
+    css += '#' + this.name + ' { display:none; }';
+    css += '#' + this.name + '.init { display:inherit; }';
+    css += '#' + this.name + '.init .interface{ display:none; }';
+    css += '#' + this.name + '.init .start{ display:inherit; }';
+    css += '#' + this.name + '.betting { display:inherit; }';
+    css += '#' + this.name + '.betting .interface { display:none; }';
+    css += '#' + this.name + '.betting .start { display:none; }';
+    css += '#' + this.name + '.playing { display:inherit; }';
+    css += '#' + this.name + '.playing .interface { display:inherit; }';
+    css += '#' + this.name + '.playing .start { display:none; }';
+    css += '#' + this.name + '.bust { display:inherit; }';
+    css += '#' + this.name + '.bust .start{ display:none; }';
+    css += '#' + this.name + '.bust .interface{ display:none; }';
     return css;
   }
   

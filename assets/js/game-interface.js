@@ -38,20 +38,23 @@
 
     // iterate over the games array and ensure the bets reference exists.
     // this occurs above output because the output functions require bets being present.
-    // also setup CSS!
     this.games.forEach( function (game, index, array) {
       game.bets = this.bets;
-      var $styles = $('#game-' + index);
-      var css = game.css();
+    }, this);
+    
+    // Add styles for both bets and all games.
+    Array.concat.call(null, this.games, this.bets).forEach(function(element, index, array){
+      var id = (element instanceof Game ? "game" : "bet") + "--" + element.name;
+      var $styles = $("#" + id);
+      var css = element.css();
       if ($styles.size() === 0) {
-        $('head').append('<style type="text/css" id="game-'+ index +'">' + css + '</style>');
+        $('head').append('<style type="text/css" id="'+ id +'">' + css + '</style>');
       } 
       else {
         $styles.html(css);
-      }
-      
-    }, this);
-        
+      }  
+    });
+            
     // we set this in the creation scripts and add to it later...
     var $select;
     

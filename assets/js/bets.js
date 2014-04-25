@@ -26,6 +26,7 @@
   window["Bets"] = function Bets () {
     this.winnings = 100;
     this.currentBet = null;
+    this.name = "sample-bets";
   }
   
   /**
@@ -87,6 +88,14 @@
     this.winnings += (winning ? 2 : 0) * this.currentBet;
     this.currentBet = null;
     $("#winnings").html(this.winnings);
+  }
+  
+  /**
+   * Bets.prototype.css
+   * Provide any css styling for the betting interface
+   */
+  Bets.prototype.css = function () {
+    return '';
   }
   
   /**
