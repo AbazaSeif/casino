@@ -17,7 +17,16 @@
       this.label = "Sample Game #1"
     };
     game1.prototype = new Game();
-
+    
+    // this shows how to call a super-method
+    game1.prototype.css = function() {
+      // do the unholy javascript prototype dance
+      var game = Object.getPrototypeOf(this);
+      var css = Object.getPrototypeOf(game).css.call(this);
+      // add something
+      return css + "#" + this.name + "{color:blue}";
+    }
+    
     var game2 = function() {
       this.name = "sample-game-2";
       this.label = "Sample Game #2"
