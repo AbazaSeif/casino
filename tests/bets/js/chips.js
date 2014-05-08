@@ -47,7 +47,9 @@ Chips.prototype.update = function() {
     var $this = $(this);
     var value = $this.attr('data-value');
     var count = stacks[value]
-    $this.attr('data-count', count);
+    $this
+      .attr('data-count', count)
+      .html('<span class="value">'+$this.data('value')+'</span>')
   });
   
   // perform css fixes assuming the new values
@@ -65,8 +67,7 @@ Chips.prototype.fix = function() {
   // fix up the heights of the elements based on data-count
   $('.stack', this.container).each(function() {
     var $this = $(this);
-    $this
-      .css('height', (($this.data('count') - 1) * 9) + 'px');
+    $this.css('height', (($this.data('count') - 1) * 9) + 'px')
   });
   
   // set up z-index and top positioning for stacks
@@ -126,15 +127,18 @@ Chips.prototype.output = function() {
       .append("<legend>Betting Interface</legend>")
       .append( function () { 
         var ret = $("<div id='bets-winnings'>Your winnings: </div>")
-          .append($("<div id='winnings'></div>"))
-          .append ( function () {
-            return bets.types.map(function(currentValue, index, array){
-              var $stack = $("<div></div>")
-                .addClass('stack')
-                .attr('data-value', currentValue.value)
-                .attr('data-count', 0)
-              return $stack;
-            }, bets)
+          .append(function () {
+            var ret = $("<div id='winnings'></div>")
+              .append ( function () {
+                return bets.types.map(function(currentValue, index, array){
+                  var $stack = $("<div></div>")
+                    .addClass('stack')
+                    .attr('data-value', currentValue.value)
+                    .attr('data-count', 0)
+                  return $stack;
+                }, bets)
+              });
+            return ret;
           });
         return ret;
       })
@@ -153,6 +157,7 @@ Chips.prototype.css = function() {
   css += "\n  width: 75px;";
   css += "\n  margin: 26px 0 13px;" 
   css += "\n  display:inline-block;";
+  css += "\n  vertical-align: bottom;"
   css += "\n}  ";
   
   // add before/after pseudo-selectors for the top/bottom backgrounds/masks
@@ -188,6 +193,16 @@ Chips.prototype.css = function() {
   css += "\n.stack[data-count='0']{";
   css += "\n  display:none;"
   css += "\n}"
+  
+  // set up the 3d transformation for the text element
+  css += "\ndiv.stack[data-value] span.value{ ";
+  css += "\n  display: block;";
+  css += "\n  position: relative;";
+  css += "\n  top: -23px;";
+  css += "\n  text-align: center;";
+  css += "\n  -webkit-transform: rotateX(50deg) rotateZ(21deg); ";
+  css += "\n  transform: rotateX(50deg) rotateZ(21deg);";
+  css += "\n}";
   
   /* already used :before - need to find another way to do this
   // add css for the text content already
