@@ -81,11 +81,9 @@ Chips.prototype.fix = function() {
   $('.stack-group .stack', this.container).each(function() {
     var $this = $(this);
     var index = $this.index();
-    var sibling_count = $this.parent().children().size();
-    var count = $this.data('count');
     $(this)
       .css('top', (index * 9) + 'px')
-      .css('zIndex', sibling_count - index);
+      .css('zIndex', stack_siblings - index);
   });
 }
 
