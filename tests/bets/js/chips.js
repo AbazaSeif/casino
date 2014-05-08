@@ -5,10 +5,10 @@ window["Chips"] = function Chips(initial) {
   this.name = "chips";
   this.winnings = initial || 100;
   this.types = [
-    { value: 1,   cssColor: '#000', cssBackground: '#ccc' },
-    { value: 5,   cssColor: '#000', cssBackground: '#c00' },
-    { value: 25,  cssColor: '#000', cssBackground: '#0c0' },
-    { value: 100, cssColor: '#fd0', cssBackground: '#222' }
+    { value: 1,   cssColor: '#000', cssBackground: '#ccc', selectedBackground: 'yellow' },
+    { value: 5,   cssColor: '#000', cssBackground: '#c00', selectedBackground: 'yellow' },
+    { value: 25,  cssColor: '#000', cssBackground: '#0c0', selectedBackground: 'yellow' },
+    { value: 100, cssColor: '#fd0', cssBackground: '#222', selectedBackground: 'yellow' }
   ];
   this.stacks = {}
   this.types.forEach(function(element, index, value){
@@ -49,7 +49,6 @@ Chips.prototype.update = function() {
     var count = stacks[value]
     $this
       .attr('data-count', count)
-      .html('<span class="value">'+$this.data('value')+'</span>')
   });
   
   // perform css fixes assuming the new values
@@ -68,6 +67,7 @@ Chips.prototype.fix = function() {
   $('.stack', this.container).each(function() {
     var $this = $(this);
     $this.css('height', (($this.data('count') - 1) * 9) + 'px')
+      .html('<span class="value">'+$this.data('value')+'</span>')
   });
   
   // set up z-index and top positioning for stacks
@@ -229,6 +229,11 @@ Chips.prototype.css = function() {
     css += "\n  background-color: " + element.cssBackground + ";"
     css += "\n  color: " + element.cssColor + ";"
     css += "\n}"
+    css += "\n.stack[data-value='" + element.value + "'].selected,"
+    css += "\n.stack[data-value='" + element.value + "'].selected:after,"
+    css += "\n.stack[data-value='" + element.value + "'].selected:before { "
+    css += "\n  background-color: " + element.selectedBackground + ";"
+    css += "\n}"    
   });
   
   return css;
