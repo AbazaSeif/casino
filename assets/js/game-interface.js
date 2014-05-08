@@ -43,7 +43,7 @@
     }, this);
     
     // Add styles for both bets and all games.
-    Array.concat.call(null, this.games, this.bets).forEach(function(element, index, array){
+    Array.prototype.concat(this.games, this.bets).forEach(function(element, index, array){
       var id = (element instanceof Game ? "game" : "bet") + "--" + element.name;
       var $styles = $("#" + id);
       var css = element.css();
