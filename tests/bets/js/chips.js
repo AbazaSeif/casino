@@ -204,23 +204,6 @@ Chips.prototype.css = function() {
   css += "\n  transform: rotateX(50deg) rotateZ(21deg);";
   css += "\n}";
   
-  /* already used :before - need to find another way to do this
-  // add css for the text content already
-  css += "\ndiv.stack[data-value]:before{ ";
-  css += "\n  position:absolute;";
-  css += "\n  top: -22px;";
-  css += "\n  display:block; ";
-  css += "\n  width: 75px; ";
-  css += "\n  background-color: transparent !important;";
-  css += "\n  content:attr(data-value); ";
-  css += "\n  transform: rotate(20deg); ";
-  css += "\n  -webkit-transform: rotate(20deg); ";
-  css += "\n  text-align:center;";
-  css += "\n  font-size:1.2em;";
-  css += "\n  z-index:1;";
-  css += "\n}";
-  */
-  
   // add the css for each of the chip types
   this.types.forEach(function (element, index, array) {
     css += "\n.stack[data-value='" + element.value + "'],"
