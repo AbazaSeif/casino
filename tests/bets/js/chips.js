@@ -66,8 +66,8 @@ Chips.prototype.fix = function() {
   // fix up the heights of the elements based on data-count
   $('.stack', this.container).each(function() {
     var $this = $(this);
-    $this.css('height', (($this.data('count') - 1) * 9) + 'px')
-      .html('<span class="value">'+$this.data('value')+'</span>')
+    $this.css('height', (($this.attr('data-count') - 1) * 9) + 'px')
+      .html('<span class="value">'+$this.attr('data-value')+'</span>')
   });
   
   // ensure margins are set properly on stackgroup
