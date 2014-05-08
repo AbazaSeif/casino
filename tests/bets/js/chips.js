@@ -70,6 +70,13 @@ Chips.prototype.fix = function() {
       .html('<span class="value">'+$this.data('value')+'</span>')
   });
   
+  // ensure margins are set properly on stackgroup
+  var $stackgroup = $('.stack-group')
+  var stack_siblings = $stackgroup.children().size()
+  $stackgroup
+    .css('margin-top', stack_siblings * 9 + 'px')
+    .css('margin-bottom', stack_siblings * 9 + 'px');
+  
   // set up z-index and top positioning for stacks
   $('.stack-group .stack', this.container).each(function() {
     var $this = $(this);
@@ -150,6 +157,8 @@ Chips.prototype.output = function() {
 Chips.prototype.css = function() {
   var css = "";
   
+  css += "\n#bets-winnings{ margin-bottom:12pt;}"
+  
   // add generic stack class
   css += "\n.stack[data-count]{";
   css += "\n  position:relative; ";
@@ -188,6 +197,7 @@ Chips.prototype.css = function() {
   css += "\n .stack-group .stack[data-count]:first-child { margin-bottom: 0 }";
   css += "\n .stack-group .stack[data-count]:nth-last-child(n+2):nth-child(n+2) { margin: 0 }";
   css += "\n .stack-group .stack[data-count]:last-child { margin-top: 0 }";
+  css += "\n .stack-group .stack[data-count]:only-child { margin: 26px 0 13px; }";
   
   // ensure those with a count of zero are not visible
   css += "\n.stack[data-count='0']{";
