@@ -38,10 +38,40 @@ $(function() {
 
 
 </script>
+<style type="text/css">
+body { background-color:gray; }
+</style>
+<script type="text/javascript">
+$(function() {
+
+  // this is performed by Chips.prototype.fix
+  $('.stack-group .stack').each(function() {
+    var $this = $(this);
+    var index = $this.index();
+    var sibling_count = $this.parent().children().size();
+    var count = $this.data('count');
+    $(this)
+      .css('top', (index*9) + 'px')
+      .css('height', ((count-1)*9) + 'px')
+      .css('zIndex', sibling_count - index)
+  });
+  
+  // turns out clicking a masked element will raise this :(
+  $('.stack-group .stack').click(function(){
+    alert('I am ' + $(this).data('value'));
+  })
+});
+</script>
 </head>
 <body>
 
 <div id="output"></div>
+
+<div class="stack-group" style="position:absolute; top: 500px;">
+<div class="stack" data-value="5" data-count="2"></div>
+<div class="stack" data-value="25" data-count="4"></div>
+<div class="stack" data-value="100" data-count="2"></div>
+</div>
 
 </body>
 </html>

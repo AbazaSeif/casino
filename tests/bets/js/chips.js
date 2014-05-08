@@ -5,26 +5,10 @@ window["Chips"] = function Chips(initial) {
   this.name = "chips";
   this.winnings = initial || 100;
   this.types = [
-    {
-      value: 1,
-      cssColor: '#000',
-      cssBackground: '#ccc'
-    },
-    {
-      value: 5,
-      cssColor: '#000',
-      cssBackground: '#c00'
-    },
-    {
-      value: 25,
-      cssColor: '#000',
-      cssBackground: '#0c0'
-    },
-    {
-      value: 100,
-      cssColor: '#fd0',
-      cssBackground: '#222'
-    }
+    { value: 1,   cssColor: '#000', cssBackground: '#ccc' },
+    { value: 5,   cssColor: '#000', cssBackground: '#c00' },
+    { value: 25,  cssColor: '#000', cssBackground: '#0c0' },
+    { value: 100, cssColor: '#fd0', cssBackground: '#222' }
   ];
   this.stacks = {}
   this.types.forEach(function(element, index, value){
@@ -58,16 +42,45 @@ Chips.prototype.split = function (amount) {
  * Updates the user interface with current values.
  */
 Chips.prototype.update = function() {
-  var chips = this;
-  $(".stack", this.container).each(function(index, element) {
-    var value = $(element).attr('data-value');
-    $(element)
-      .attr('data-count', chips.stacks[value])
-      .css('height', (chips.stacks[value] - 1) * 9 + 'px')
+  var stacks = this.stacks; // jquery provides no [this] context in .each
+  $(".stack", this.container).each(function() {
+    var $this = $(this);
+    var value = $this.attr('data-value');
+    var count = stacks[value]
+    $this.attr('data-count', count);
   });
   
-
+  // perform css fixes assuming the new values
+  this.fix();
 }
+
+/**
+ * Chips.prorotype.fix
+ * Performs fixes for things that can't be done with CSS
+ * ( p.s., full support for calc, attr and masking would be welcome here)
+ * There is a magic number used throughout this, 9 -- it is the height of a chip.
+ */
+Chips.prototype.fix = function() {
+
+  // fix up the heights of the elements based on data-count
+  $('.stack', this.container).each(function() {
+    var $this = $(this);
+    $this
+      .css('height', (($this.data('count') - 1) * 9) + 'px');
+  });
+  
+  // set up z-index and top positioning for stacks
+  $('.stack-group .stack', this.container).each(function() {
+    var $this = $(this);
+    var index = $this.index();
+    var sibling_count = $this.parent().children().size();
+    var count = $this.data('count');
+    $(this)
+      .css('top', (index * 9) + 'px')
+      .css('zIndex', sibling_count - index);
+  });
+}
+
 
 /**
  * Chips.prototype.start
@@ -136,25 +149,44 @@ Chips.prototype.css = function() {
   // add generic stack class
   css += "\n.stack[data-count]{";
   css += "\n  position:relative; ";
-  css += "\n  background-image: ";
-  css += "\n    url("+this.imgRoot+"top.png), ";
-  css += "\n    url("+this.imgRoot+"/middle.png),";
-  css += "\n    url("+this.imgRoot+"/bottom.png);";
-  css += "\n  background-position: top center, center 27px, bottom center;";
-  css += "\n  background-repeat: no-repeat, repeat, no-repeat;";
-  css += "\n  background-origin: border-box, padding-box, border-box;";
-  css += "\n  background-clip: border-box, padding-box, border-box;  ";
-  css += "\n  border-top: 26px solid transparent;";
-  css += "\n  border-bottom: 13px solid transparent;";
+  css += "\n  background: url("+this.imgRoot+"/middle.png) repeat center 27px;";
   css += "\n  width: 75px;";
   css += "\n  display:inline-block;";
   css += "\n}  ";
   
+  // add before/after pseudo-selectors for the top/bottom backgrounds/masks
+  css += "\n.stack:before {";
+  css += "\n  content:'';";
+  css += "\n  position:absolute;";
+  css += "\n  top: -26px;";
+  css += "\n  width: 75px;";
+  css += "\n  height: 26px;";
+  css += "\n  background: url(img/top.png) no-repeat top center;";
+  css += "\n  -webkit-mask:url(img/mask-top-webkit.png) no-repeat top center;";
+  css += "\n  mask: url(img/mask.svg#chip-mask-top);";
+  css += "\n}";
+  
+  css += "\n.stack:after {";
+  css += "\n  content:'';";
+  css += "\n  position:absolute;";
+  css += "\n  bottom: -13px;";
+  css += "\n  width: 75px;";
+  css += "\n  height: 13px;";
+  css += "\n  background: url(img/bottom.png) no-repeat bottom center;";
+  css += "\n  -webkit-mask: url(img/mask-bottom-webkit.png) no-repeat bottom center;";
+  css += "\n  mask: url(img/mask.svg#chip-mask-bottom);";
+  css += "\n} ";
+  
+  // ensure stack-groups are stacked on top of eachother.
+  css += "\n .stack-group .stack[data-count] { display: block }";
+  
+  // ensure those with a count of zero are not visible
   css += "\n.stack[data-count='0']{";
   css += "\n  display:none;"
   css += "\n}"
   
-  // add css for the text content
+  /* already used :before - need to find another way to do this
+  // add css for the text content already
   css += "\ndiv.stack[data-value]:before{ ";
   css += "\n  position:absolute;";
   css += "\n  top: -22px;";
@@ -168,15 +200,17 @@ Chips.prototype.css = function() {
   css += "\n  font-size:1.2em;";
   css += "\n  z-index:1;";
   css += "\n}";
+  */
   
   // add the css for each of the chip types
   this.types.forEach(function (element, index, array) {
     css += "\n.stack[data-value='" + element.value + "'],"
+    css += "\n.stack[data-value='" + element.value + "']:after,"
     css += "\n.stack[data-value='" + element.value + "']:before { "
     css += "\n  background-color: " + element.cssBackground + ";"
     css += "\n  color: " + element.cssColor + ";"
     css += "\n}"
-  }, this);
+  });
   
   return css;
 }
