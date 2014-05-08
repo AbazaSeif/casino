@@ -151,6 +151,7 @@ Chips.prototype.css = function() {
   css += "\n  position:relative; ";
   css += "\n  background: url("+this.imgRoot+"/middle.png) repeat center 27px;";
   css += "\n  width: 75px;";
+  css += "\n  margin: 26px 0 13px;" 
   css += "\n  display:inline-block;";
   css += "\n}  ";
   
@@ -177,8 +178,11 @@ Chips.prototype.css = function() {
   css += "\n  mask: url(img/mask.svg#chip-mask-bottom);";
   css += "\n} ";
   
-  // ensure stack-groups are stacked on top of eachother.
+  // stack group fixes - ensure they are stacked on top of eachother & margins work.
   css += "\n .stack-group .stack[data-count] { display: block }";
+  css += "\n .stack-group .stack[data-count]:first-child { margin-bottom: 0 }";
+  css += "\n .stack-group .stack[data-count]:nth-last-child(n+2):nth-child(n+2) { margin: 0 }";
+  css += "\n .stack-group .stack[data-count]:last-child { margin-top: 0 }";
   
   // ensure those with a count of zero are not visible
   css += "\n.stack[data-count='0']{";
