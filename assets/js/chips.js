@@ -66,25 +66,30 @@ Chips.prototype.fix = function() {
   // fix up the heights of the elements based on data-count
   $('.stack', this.container).each(function() {
     var $this = $(this);
-    $this.css('height', (($this.attr('data-count') - 1) * 9) + 'px')
+    var count = $this.attr('data-count');
+    $this.css('height', ((--count) * 9) + 'px')
       .html('<span class="value">'+$this.attr('data-value')+'</span>')
   });
   
-  // ensure margins are set properly on stackgroup
-  var $stackgroup = $('.stack-group')
-  var stack_siblings = $stackgroup.children().size()
-  $stackgroup
-    .css('margin-top', stack_siblings * 9 + 'px')
-    .css('margin-bottom', stack_siblings * 9 + 'px');
-  
-  // set up z-index and top positioning for stacks
+
+  var stack_siblings = $('.stack-group').children().size()
+    
+  // set up z-index and top positioning for stacks, also use this loop to count chips
+  var chip_count = 0;
   $('.stack-group .stack', this.container).each(function() {
     var $this = $(this);
     var index = $this.index();
+    chip_count += parseInt($this.attr('data-count'));
     $(this)
       .css('top', (index * 9) + 'px')
       .css('zIndex', stack_siblings - index);
   });
+  
+  // ensure height of stack group is set properly.
+  // height of absolutly positioned pseudoelements is not taken into account.
+  $('.stack-group').css('height', ((chip_count * 9)) + 'px')
+  
+  
 }
 
 

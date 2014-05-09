@@ -63,6 +63,8 @@
 //  - when it is an only-child, set same as generic 'stack' margins as above
 // 
 .stack-group {
+  margin-top: 26px;
+  margin-bottom: 13px;
   .stack[data-count] {
     display: block;
     &:first-child { margin-bottom: 0 }
