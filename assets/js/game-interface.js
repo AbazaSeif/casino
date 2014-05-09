@@ -119,7 +119,7 @@
       
       // add the bet's user interface
       .append(this.bets.output())
-      
+      this.bets.update(); // todo, rethink this
   // end jQuery chain
   ;
   

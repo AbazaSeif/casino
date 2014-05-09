@@ -40,7 +40,7 @@
         new game1(),
         new game2()
       ],
-      'bets': new Bets()
+      'bets': new Chips(325)
     });
     
   });
