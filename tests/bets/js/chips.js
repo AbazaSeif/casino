@@ -147,70 +147,24 @@ Chips.prototype.output = function() {
           });
         return ret;
       })
+      .append( function () {
+        var ret = $("<div id='current-bet-interface'></div>")
+          .css('display', 'none')
+          .append("<div id='bet-message'>Click chips above to bet them</div>")
+          .append("<div class='stack-group'></div>");
+        return ret;
+      });
 
   this.container = $bets[0];
   return this.container;
 }
 
+/**
+ * Chips.prototype.css
+ * Provide any dynamic css styling for the betting interface
+ */
 Chips.prototype.css = function() {
   var css = "";
-  
-  css += "\n#bets-winnings{ margin-bottom:12pt;}"
-  
-  // add generic stack class
-  css += "\n.stack[data-count]{";
-  css += "\n  position:relative; ";
-  css += "\n  background: url("+this.imgRoot+"/middle.png) repeat center 27px;";
-  css += "\n  width: 75px;";
-  css += "\n  margin: 26px 0 13px;" 
-  css += "\n  display:inline-block;";
-  css += "\n  vertical-align: bottom;"
-  css += "\n}  ";
-  
-  // add before/after pseudo-selectors for the top/bottom backgrounds/masks
-  css += "\n.stack:before {";
-  css += "\n  content:'';";
-  css += "\n  position:absolute;";
-  css += "\n  top: -26px;";
-  css += "\n  width: 75px;";
-  css += "\n  height: 26px;";
-  css += "\n  background: url(img/top.png) no-repeat top center;";
-  css += "\n  -webkit-mask:url(img/mask-top-webkit.png) no-repeat top center;";
-  css += "\n  mask: url(img/mask.svg#chip-mask-top);";
-  css += "\n}";
-  
-  css += "\n.stack:after {";
-  css += "\n  content:'';";
-  css += "\n  position:absolute;";
-  css += "\n  bottom: -13px;";
-  css += "\n  width: 75px;";
-  css += "\n  height: 13px;";
-  css += "\n  background: url(img/bottom.png) no-repeat bottom center;";
-  css += "\n  -webkit-mask: url(img/mask-bottom-webkit.png) no-repeat bottom center;";
-  css += "\n  mask: url(img/mask.svg#chip-mask-bottom);";
-  css += "\n} ";
-  
-  // stack group fixes - ensure they are stacked on top of eachother & margins work.
-  css += "\n .stack-group .stack[data-count] { display: block }";
-  css += "\n .stack-group .stack[data-count]:first-child { margin-bottom: 0 }";
-  css += "\n .stack-group .stack[data-count]:nth-last-child(n+2):nth-child(n+2) { margin: 0 }";
-  css += "\n .stack-group .stack[data-count]:last-child { margin-top: 0 }";
-  css += "\n .stack-group .stack[data-count]:only-child { margin: 26px 0 13px; }";
-  
-  // ensure those with a count of zero are not visible
-  css += "\n.stack[data-count='0']{";
-  css += "\n  display:none;"
-  css += "\n}"
-  
-  // set up the 3d transformation for the text element
-  css += "\ndiv.stack[data-value] span.value{ ";
-  css += "\n  display: block;";
-  css += "\n  position: relative;";
-  css += "\n  top: -23px;";
-  css += "\n  text-align: center;";
-  css += "\n  -webkit-transform: rotateX(50deg) rotateZ(21deg); ";
-  css += "\n  transform: rotateX(50deg) rotateZ(21deg);";
-  css += "\n}";
   
   // add the css for each of the chip types
   this.types.forEach(function (element, index, array) {

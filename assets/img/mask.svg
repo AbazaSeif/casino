@@ -3,10 +3,10 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
     <mask id="chip-mask-top">
-      <image x="0" y="0" width="75px" height="26px" xlink:href="mask-top.png" />
+      <image x="0" y="0" width="75px" height="26px" xlink:href="../img/mask-top.png" />
     </mask>
     <mask id="chip-mask-bottom">
-      <image x="0" y="0" width="75px" height="13px" xlink:href="mask-bottom.png" />
+      <image x="0" y="0" width="75px" height="13px" xlink:href="../img/mask-bottom.png" />
     </mask>
   </defs>
 </svg>
