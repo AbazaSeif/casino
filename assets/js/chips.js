@@ -30,7 +30,7 @@ Chips.prototype.split = function (amount) {
       return b.value - a.value;
     })
     .forEach(function(element, index, array){
-      while (amount > element.value * 2) {
+      while (amount >= element.value) {
         this.stacks[element.value]++;
         amount -= element.value;
       }
@@ -43,12 +43,13 @@ Chips.prototype.split = function (amount) {
  */
 Chips.prototype.update = function() {
   var stacks = this.stacks; // jquery provides no [this] context in .each
-  $(".stack", this.container).each(function() {
+  
+  // update the data-value attribtues in the winnnig stacks with internal stack count
+  $("#winnings .stack", this.container).each(function() {
     var $this = $(this);
     var value = $this.attr('data-value');
     var count = stacks[value]
-    $this
-      .attr('data-count', count)
+    $this.attr('data-count', count)
   });
   
   // perform css fixes assuming the new values
@@ -103,6 +104,9 @@ Chips.prototype.fix = function() {
 
 Chips.prototype.start = function(callback) {
   this.callback = callback;
+  $("#current-bet-interface").css('display', '');
+  $("#winnings .stack", this.container).on("click", {bets:this}, winningChipClick);
+  $(".stack-group", this.container).on("click", '.stack', {bets:this}, pendingChipClick);
 }
 
 /**
@@ -115,8 +119,41 @@ Chips.prototype.start = function(callback) {
  */
 
 Chips.prototype.finish = function(e) {
-  var chips = e.data.chips;
-  chips.betsCallback.call();
+  var chips = e.data.bets;
+  $pendingChips = $('.stack-group .stack', this.container);
+  $betsError = $("#bet-error", this.container);
+  if ($pendingChips.size() === 0) {
+    $betsError.html("You must select some chips to bet!")
+  }
+  else {
+    $betsError.html("");
+    var pendingChipValues = 0;
+    $pendingChips.each(function() {
+      pendingChipValues += $(this).attr('data-count') * $(this).attr('data-value');
+    });
+    $("#current-bet-interface").css('display', 'none');
+    $("#winnings .stack", this.container).off("click", winningChipClick);
+    $(".stack-group", this.container).off("click", pendingChipClick);
+    $(".stack-group").empty();
+    chips.currentBet = pendingChipValues;
+    chips.callback.call();
+    chips.callback = null;
+  }
+}
+
+/**
+ * Chips.prototype.win
+ * Called by GamesInterface, signifies the user has won (or lost)
+ *
+ * @param winning boolean
+ *  True for a win, false for a loss
+ */
+Chips.prototype.win = function (winning) {
+  if (winning) {
+    this.split( this.currentBet * 2); 
+  }
+  this.currentBet = null;
+  this.update();
 }
 
 /**
@@ -124,13 +161,18 @@ Chips.prototype.finish = function(e) {
  * This gets called when a user leaves the game with a pending bet operation.
  */
 Chips.prototype.abort = function() {
-  
+  this.currentBet = null;
+  this.callback = null;
+  $("#current-bet-interface").css('display', 'none');
+  $("#winnings .stack", this.container).off("click", winningChipClick);
+  $(".stack-group", this.container).off("click", pendingChipClick);
 }
 
-Chips.prototype.finish = function() {
 
-}
-
+/**
+ * Chips.prototype.output
+ * Provides user interface for the GameInterface
+ */
 Chips.prototype.output = function() {
   var bets = this;
   var $bets = $("<fieldset id='bets-interface'></fieldset>")
@@ -155,8 +197,15 @@ Chips.prototype.output = function() {
       .append( function () {
         var ret = $("<div id='current-bet-interface'></div>")
           .css('display', 'none')
-          .append("<div id='bet-message'>Click chips above to bet them</div>")
-          .append("<div class='stack-group'></div>");
+          .append("<div id='bet-message'>Click chips above to bet them. Click finished once ready.</div>")
+          .append("<div class='stack-group'></div>")
+          .append(function() {
+            var ret = $("<button id='finish-bet'>Finished</button>")
+              .on('click', {bets:bets}, bets.finish);
+            return ret;
+          })
+          .append("<div id='bet-error'></div>");
+                  
         return ret;
       });
 
@@ -189,6 +238,57 @@ Chips.prototype.css = function() {
   return css;
 }
 
+/**
+ * winningChipClick
+ * jQuery click handler for the winning chips stack.
+ * 
+ * This is attached when a pending bet is called and detatched when finished or upon abort
+ * Clicking a chip adds it to the pending stack and removes it from winning chips.
+ *
+ * @param e 
+ *  Event handler, assumes :
+ *   e.data.bets - reference to Bets object
+ */
+function winningChipClick (e) {
+  var $this = $(this);
+  var value = $this.attr('data-value');
+  e.data.bets.stacks[value]--;
+  
+  var $stack = $('.stack-group .stack[data-value="'+value+'"]', this.container)
+  if ($stack.size() === 0) {
+    $("<div></div>")
+      .attr('data-value', value)
+      .attr('data-count', '1')
+      .addClass('stack')
+      .appendTo('.stack-group');
+  }
+  else {
+    $stack.attr('data-count', parseInt($stack.attr('data-count')) + 1);
+  }
+  e.data.bets.update();
+}
+
+/**
+ * pendingChipClick
+ * jQuery click handler for the pending chips stack.
+ * 
+ * This is attached when a pending bet is called and detatched when finished or upon abort
+ *
+ * @param e 
+ *  Event handler, assumes :
+ *   e.data.bets - reference to Bets object
+ */
+function pendingChipClick (e) {
+  var $this = $(this);
+  var value = $this.attr('data-value');
+  var count = $this.attr('data-count');
+  e.data.bets.stacks[value]++;
+  $this.attr('data-count', --count);
+  if(count === 0 ) {
+    $this.remove();
+  }
+  e.data.bets.update();
+}
 
 
 })(jQuery)
