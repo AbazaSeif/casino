@@ -3,7 +3,8 @@
 noscript { color:red; font-weight:bold; }
 
 body{ 
-  font-size: 14pt/12pt;
+  font-size: 14pt;
+  line-height: 12pt;
   width: 790px;
   margin: 0 auto;
   font-family: sans-serif;
@@ -18,7 +19,7 @@ header {
   }
   
   h1 {
-    font: normal 48pt "Monoton" sans-serif;
+    font: normal 48pt "Monoton", sans-serif;
     color: red;
     text-shadow: 0 0 80px red, 0 0 30px firebrick, 0 0 6px darkred;    
     span {
@@ -40,7 +41,7 @@ footer {
 }
 
 @include keyframes('flicker') {
-  31%, 81% { text-shadow: inherit; color: inherit; }
-  30%, 80% { text-shadow: none;    color: dark-red; }
+  31%, 81% { color: inherit; }
+  30%, 80% { color: darkred; }
 }
 
