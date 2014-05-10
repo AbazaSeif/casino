@@ -1,6 +1,12 @@
 
+// a few custom mixins
+@import "_mixins.scss";
+
+// various fonts
+@import "_fonts.scss";
+
+// the index page
 @import "_index.scss";
 
-
-// import the chips interface static styles
+// chips interface static styles
 @import "_chips.scss";

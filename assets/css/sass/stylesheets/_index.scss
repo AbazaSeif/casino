@@ -3,15 +3,32 @@
 noscript { color:red; font-weight:bold; }
 
 body{ 
+  font-size: 14pt/12pt;
   width: 790px;
   margin: 0 auto;
   font-family: sans-serif;
+  background-color: black;
+  color: white;
 }
 
 header {
   margin-bottom: 1.0em;
   h1, h2 {
     margin: 0;
+  }
+  
+  h1 {
+    font: normal 48pt "Monoton" sans-serif;
+    color: red;
+    text-shadow: 0 0 80px red, 0 0 30px firebrick, 0 0 6px darkred;    
+    span {
+      &:nth-child(1) { @include animation(flicker 10s   steps(1) infinite); }
+      &:nth-child(2) { @include animation(flicker 200ms steps(1) infinite); }
+      &:nth-child(3) { @include animation(flicker 400ms steps(1) infinite); }
+      &:nth-child(4) { @include animation(flicker 600ms steps(1) infinite); }
+      &:nth-child(5) { @include animation(flicker 300ms steps(1) 2s infinite);}
+      &:nth-child(6) { @include animation(flicker 800ms steps(1) 2s infinite);}
+    }
   }
 }
 
@@ -21,3 +38,9 @@ footer {
     margin: 0;
   }
 }
+
+@include keyframes('flicker') {
+  31%, 81% { text-shadow: inherit; color: inherit; }
+  30%, 80% { text-shadow: none;    color: dark-red; }
+}
+
