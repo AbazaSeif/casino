@@ -6,9 +6,6 @@
 	@-moz-keyframes $name {
 	  @content;
 	}
-	@-ms-keyframes $name {
-	  @content;
-	}
 	@-o-keyframes $name {
 	  @content;
 	}
@@ -22,4 +19,12 @@
   -moz-animation: $declarations;
   -o-animation: $declarations;
   animation: $declarations;
+}
+
+@mixin transform($declarations) {
+ -webkit-transform: $declarations;
+  -moz-transform: $declarations;
+  -o-transform: $declarations;
+  -ms-transform: $declarations;
+  transform: $declarations;
 }

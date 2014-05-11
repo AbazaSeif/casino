@@ -1,18 +1,22 @@
 
+$stack_top: 26px;
+$stack_bottom: 13px;
+$stack_width: 75px;
+
 @mixin stack($dir) {
   content: '';
   position: absolute;
-  width: 75px;
+  width: $stack_width;
   background:    image-url( $dir + '.png',                 false, false) no-repeat unquote($dir) center;
   -webkit-mask:  image-url('mask-' + $dir + '-webkit.png', false, false) no-repeat unquote($dir) center;
   mask:          image-url('mask.svg#chip-mask-' + $dir,   false, false);
   @if $dir == 'bottom' {
-    bottom: -13px;
-    height: 13px;
+    bottom: -$stack_bottom;
+    height: $stack_bottom;
   }
   @if $dir == 'top' {
-    top: -26px;
-    height: 26px;
+    top: -$stack_top;
+    height: $stack_top;
   }
 
 }
@@ -23,7 +27,7 @@
 .stack {
 
   // ensure those with a count of zero are not visible
-  // we use !important here because we display is set with a few more specific selectors below with stack-group
+  // use !important here because display is set with more specific selectors below with stack-group
   // this data-count=0 rule should be trumping everything and I don't want to write it again below. 
   
   &[data-count='0']{
@@ -34,18 +38,17 @@
   &[data-value] span.value { 
     display: block;
     position: relative;
-    top: -23px;
+    top: -$stack_top + 3px;
     text-align: center;
-    -webkit-transform: rotateX(50deg) rotateZ(21deg); 
-    transform: rotateX(50deg) rotateZ(21deg);
+    @include transform(rotateX(50deg) rotateZ(21deg)); 
   }
   
   // for those with a count, we add in the special background/masks
   &[data-count] {
     position:relative; 
-    background: image-url('middle.png', false, false) repeat center 27px;
-    width: 75px;
-    margin: 26px 0 13px; 
+    background: image-url('middle.png', false, false) repeat center ($stack_top + 1);
+    width: $stack_width;
+    margin: $stack_top 0 $stack_bottom; 
     display:inline-block;
     vertical-align: bottom;
     
@@ -63,13 +66,13 @@
 //  - when it is an only-child, set same as generic 'stack' margins as above
 // 
 .stack-group {
-  margin-top: 26px;
-  margin-bottom: 13px;
+  margin-top: $stack_top;
+  margin-bottom: $stack_bottom;
   .stack[data-count] {
     display: block;
     &:first-child { margin-bottom: 0 }
     &:nth-last-child(n+2):nth-child(n+2) { margin: 0 }
     &:last-child { margin-top: 0 }
-    &:only-child { margin: 26px 0 13px; }
+    &:only-child { margin: $stack_top 0 $stack_bottom; }
   }
 } 
