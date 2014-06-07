@@ -174,23 +174,24 @@ Chips.prototype.abort = function() {
  * Provides user interface for the GameInterface
  */
 Chips.prototype.output = function() {
+
+  // we can't dig too deep otherwise uglifyjs has troubles
+  // declare the chip stacks here to avoid going too deep
+  var $chips = this.types.map(function(currentValue, index, array){
+    var $stack = $("<div></div>")
+      .addClass('stack')
+      .attr('data-value', currentValue.value)
+      .attr('data-count', 0)
+    return $stack;
+  });
+  
   var bets = this;
   var $bets = $("<fieldset id='bets-interface'></fieldset>")
       .append("<legend>Betting Interface</legend>")
       .append( function () { 
         var ret = $("<div id='bets-winnings'>Your winnings: </div>")
           .append(function () {
-            var ret = $("<div id='winnings'></div>")
-              .append ( function () {
-                return bets.types.map(function(currentValue, index, array){
-                  var $stack = $("<div></div>")
-                    .addClass('stack')
-                    .attr('data-value', currentValue.value)
-                    .attr('data-count', 0)
-                  return $stack;
-                }, bets)
-              });
-            return ret;
+            return $("<div id='winnings'></div>").append ($chips);
           });
         return ret;
       })
@@ -208,9 +209,7 @@ Chips.prototype.output = function() {
                   
         return ret;
       });
-
-  this.container = $bets[0];
-  return this.container;
+  return $bets[0];
 }
 
 /**

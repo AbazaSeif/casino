@@ -38,7 +38,8 @@
       'output': $("#output")[0],
       'games': [
         new game1(),
-        new game2()
+        new game2(),
+        new Blackjack()
       ],
       'bets': new Chips(144)
     });

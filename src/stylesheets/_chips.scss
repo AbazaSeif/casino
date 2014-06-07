@@ -7,9 +7,9 @@ $stack_width: 75px;
   content: '';
   position: absolute;
   width: $stack_width;
-  background:    image-url( $dir + '.png',                 false, false) no-repeat unquote($dir) center;
+  background:    image-url($dir + '.png', false, false) no-repeat unquote($dir) center;
   -webkit-mask:  image-url('mask-' + $dir + '-webkit.png', false, false) no-repeat unquote($dir) center;
-  mask:          image-url('mask.svg#chip-mask-' + $dir,   false, false);
+  mask:          url(image-url('mask.svg', true, false) + '#chip-mask-' + $dir);
   @if $dir == 'bottom' {
     bottom: -$stack_bottom;
     height: $stack_bottom;
