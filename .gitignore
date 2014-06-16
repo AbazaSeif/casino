@@ -16,3 +16,5 @@ $RECYCLE.BIN/
 
 # ignore sass-cache directory
 .sass-cache
+
+# ignore the build directory
