@@ -18,3 +18,4 @@ $RECYCLE.BIN/
 .sass-cache
 
 # ignore the build directory
+build
