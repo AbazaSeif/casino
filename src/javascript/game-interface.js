@@ -134,7 +134,9 @@
     $("#game-selection").css('display', '');
     $("#game-starter").css('display', '');
     $("#game-ender").css('display', 'none');
-    $(game.current.container).removeClass('init');
+    $(game.current.container)
+      .removeClass()
+      .addClass('game');
     game.current.fin();
     game.current = undefined;
     game.bets.abort();
