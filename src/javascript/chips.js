@@ -136,6 +136,7 @@ Chips.prototype.finish = function(e) {
     $(".stack-group", this.container).off("click", pendingChipClick);
     $(".stack-group").empty();
     chips.currentBet = pendingChipValues;
+    chips.winnings -= pendingChipValues;
     chips.callback.call();
     chips.callback = null;
   }
@@ -149,6 +150,7 @@ Chips.prototype.finish = function(e) {
  *  True for a win, false for a loss
  */
 Chips.prototype.win = function (winning) {
+  this.winnings += (winning ? 2 : 0) * this.currentBet;
   if (winning) {
     this.split( this.currentBet * 2); 
   }
