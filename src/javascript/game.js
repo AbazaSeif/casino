@@ -50,8 +50,7 @@
   Game.prototype.init = function () {
     var bust = this.bets.winnings === 0;
     $(this.container)
-      .removeClass()
-      .addClass('game init')
+      .removeClass('playing')
       .toggleClass('bust', bust);
     $(".status", this.container)
       .html( bust ? "You have no money - get out of here you lazy bum!" : "Press start to continue");
@@ -63,8 +62,7 @@
    */
   Game.prototype.fin = function () {
     $(this.container)
-      .removeClass()
-      .addClass('game');
+      .removeClass('bust');
   }
   /**
    * Game.prototype.start
@@ -80,8 +78,7 @@
     var bets = game.bets;
     
     $(container)
-      .removeClass()
-      .addClass('game betting');
+      .addClass('betting');
     
     $('.status', container)
       .html("Enter a bet to continue...");
@@ -91,8 +88,8 @@
     bets.start( function () {
     
       $(container)
-        .removeClass()
-        .addClass('game playing');
+        .removeClass('betting')
+        .addClass('playing');
         
       $('.status', container)
         .html("Current bet is " + bets.currentBet);
@@ -129,7 +126,7 @@
    */ 
   Game.prototype.output = function () {
     var game = this;
-    var $game = $("<fieldset class='"+ this.name +"'></fieldset>")
+    var $game = $("<fieldset class='game' id='"+ this.name +"'></fieldset>")
       .append("<legend>" + this.label + "</legend>")
       .append( function () {
         var ret = $("<div class='commands'></div>")
@@ -156,19 +153,6 @@
    */
   Game.prototype.css = function() {
     var css = '';
-    css += '#' + this.name + ' { display:none; }';
-    css += '#' + this.name + '.init { display:inherit; }';
-    css += '#' + this.name + '.init .interface{ display:none; }';
-    css += '#' + this.name + '.init .start{ display:inherit; }';
-    css += '#' + this.name + '.betting { display:inherit; }';
-    css += '#' + this.name + '.betting .interface { display:none; }';
-    css += '#' + this.name + '.betting .start { display:none; }';
-    css += '#' + this.name + '.playing { display:inherit; }';
-    css += '#' + this.name + '.playing .interface { display:inherit; }';
-    css += '#' + this.name + '.playing .start { display:none; }';
-    css += '#' + this.name + '.bust { display:inherit; }';
-    css += '#' + this.name + '.bust .start{ display:none; }';
-    css += '#' + this.name + '.bust .interface{ display:none; }';
     return css;
   }
   

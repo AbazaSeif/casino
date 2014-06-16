@@ -1,0 +1,21 @@
+
+.game {
+
+  display:none;
+  
+  &.init { display:inherit; }
+  
+  // TODO:  Remove these, move to 'sample-game.scss'
+  &.init .interface{ display:none; }
+  &.init .start{ display:inherit; }
+  &.betting { display:inherit; }
+  &.betting .interface { display:none; }
+  &.betting .start { display:none; }
+  &.playing { display:inherit; }
+  &.playing .interface { display:inherit; }
+  &.playing .start { display:none; }
+  &.bust { display:inherit; }
+  &.bust .start{ display:none; }
+  &.bust .interface{ display:none; }
+
+}

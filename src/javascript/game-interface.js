@@ -47,6 +47,7 @@
       var id = (element instanceof Game ? "game" : "bet") + "--" + element.name;
       var $styles = $("#" + id);
       var css = element.css();
+      if (css === "") return;
       if ($styles.size() === 0) {
         $('head').append('<style type="text/css" id="'+ id +'">' + css + '</style>');
       } 
@@ -79,30 +80,14 @@
         .append( function () {
           // append the game starter button
           var ret = $("<button id='game-starter'>Start</button>")
-            .click( function (e) {
-              $selected = $("#game-selection").val();
-              if($selected != "") {
-                $("#game-selection").css('display', 'none');
-                $("#game-starter").css('display', 'none');
-                $("#game-ender").css('display', '');
-                game.current = game.games[$selected];
-                game.current.init();
-              }
-            });
+            .click({game:game}, start_game);
           return ret;
         })
         .append( function () {
           // append the game ender button
           var ret = $("<button id='game-ender'>Leave</button>")
             .css('display', 'none')
-            .click( function (e) {
-              $("#game-selection").css('display', '');
-              $("#game-starter").css('display', '');
-              $("#game-ender").css('display', 'none');
-              game.current.fin();
-              game.current = undefined;
-              game.bets.abort();
-            });
+            .click({game:game}, end_game);
           return ret;
         });
         return ret;
@@ -113,7 +98,7 @@
         return game.games.map( function (game) {
           var $game = $(game.output());
           $game.attr('id', game.name);
-          return $game; //.css('display', 'none');
+          return $game;
         });
       })
       
@@ -122,6 +107,38 @@
       this.bets.update(); // todo, rethink this
   // end jQuery chain
   ;
+  
+  /**
+   * start_game
+   * jQuery click handler for the start button
+   */
+  function start_game (e) {
+    var game = e.data.game;
+    $selected = $("#game-selection").val();
+    if($selected != "") {
+      $("#game-selection").css('display', 'none');
+      $("#game-starter").css('display', 'none');
+      $("#game-ender").css('display', '');
+      game.current = game.games[$selected];
+      $(game.current.container).addClass('init');
+      game.current.init();
+    }
+  }
+
+  /**
+   * end_game
+   * jQuery click handler for the end button
+   */
+  function end_game(e) {
+    var game = e.data.game;
+    $("#game-selection").css('display', '');
+    $("#game-starter").css('display', '');
+    $("#game-ender").css('display', 'none');
+    $(game.current.container).removeClass('init');
+    game.current.fin();
+    game.current = undefined;
+    game.bets.abort();
+  }
   
 };
 
