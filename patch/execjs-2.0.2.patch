@@ -1,0 +1,28 @@
+--- module-original.rb	2014-06-17 07:59:03.712541300 -0700
++++ module.rb	2014-06-17 07:28:23.162267900 -0700
+@@ -34,5 +34,10 @@ module ExecJS
+     def windows?
+       @windows ||= RbConfig::CONFIG["host_os"] =~ /mswin|mingw/
+     end
++    
++    def cygwin?
++      @cygwin ||= RbConfig::CONFIG["host_os"] =~ /cygwin/
++    end
++    
+   end
+ end
+--- external_runtime-original.rb	2014-06-17 07:58:50.624792800 -0700
++++ external_runtime.rb	2014-06-17 07:29:32.299222300 -0700
+@@ -25,7 +25,12 @@ module ExecJS
+         source = "#{@source}\n#{source}" if @source
+ 
+         compile_to_tempfile(source) do |file|
+-          extract_result(@runtime.send(:exec_runtime, file.path))
++            filepath = file.path
++            if ExecJS.cygwin?
++              IO.popen("cygpath -m " + file.path) { |f| filepath = f.read }
++              filepath = filepath.gsub("\n","")
++            end
++            extract_result(@runtime.send(:exec_runtime, filepath))
+         end
+       end

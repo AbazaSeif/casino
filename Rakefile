@@ -75,11 +75,14 @@ def javascript
     'solitaire.js',
     'index.js'
   ]
+
+  src = ''
+  files.each do |f|
+    src += File.read js_path + f
+  end
   File.open($JS_DIR + 'page.js', 'w') {|out|
-    files.each do |f|
-      out.puts Uglifier.new.compile( File.read js_path + f )
-    end
-  }
+    out.puts Uglifier.new.compile_with_map( src )
+  }  
   print "Done!\n"
 end
 
