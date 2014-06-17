@@ -61,7 +61,10 @@ end
 def javascript
   print 'Uglyfing JS...'
   require 'uglifier'
+  
   js_path = $SOURCE_PATH.join('javascript')
+  min_file = $JS_DIR + 'page.js'
+  map_file = $JS_DIR + 'page.js.map'
   files = [
     'array.js',
     'lib.js',
@@ -79,10 +82,24 @@ def javascript
   src = ''
   files.each do |f|
     src += File.read js_path + f
+    cp js_path + f, $JS_DIR
   end
-  File.open($JS_DIR + 'page.js', 'w') {|out|
-    out.puts Uglifier.new.compile_with_map( src )
-  }  
+
+  minified, sourcemap = Uglifier.compile_with_map(src,
+    :source_filename => files,
+    :output_filename => min_file.basename,
+    :source_root => "")
+  
+  # note - this seems to fuck up passing multiple source files, 
+  # need to replace 'source:[[ list, of, files]]' with 'source:[list, of, files]'
+  
+  output = File.open(map_file, 'w')
+  output << sourcemap.gsub(/\[\[(.+?)\]\]/, '[\1]')
+  
+  output = File.open(min_file, 'w')
+  output << minified
+  output << "\n//# sourceMappingURL=#{map_file.basename}\n"
+  
   print "Done!\n"
 end
 
