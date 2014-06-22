@@ -7,8 +7,8 @@ $stack_width: 75px;
   content: '';
   position: absolute;
   width: $stack_width;
-  background:    image-url($dir + '.png', false, false) no-repeat unquote($dir) center;
-  -webkit-mask:  image-url('mask-' + $dir + '-webkit.png', false, false) no-repeat unquote($dir) center;
+  background:    inline-image($dir + '.png') no-repeat unquote($dir) center;
+  -webkit-mask:  inline-image('mask-' + $dir + '-webkit.png') no-repeat unquote($dir) center;
   mask:          url(image-url('mask.svg', true, false) + '#chip-mask-' + $dir);
   @if $dir == 'bottom' {
     bottom: -$stack_bottom;
@@ -46,7 +46,7 @@ $stack_width: 75px;
   // for those with a count, we add in the special background/masks
   &[data-count] {
     position:relative; 
-    background: image-url('middle.png', false, false) repeat center ($stack_top + 1);
+    background: inline-image('middle.png') repeat center ($stack_top + 1);
     width: $stack_width;
     margin: $stack_top 0 $stack_bottom; 
     display:inline-block;
