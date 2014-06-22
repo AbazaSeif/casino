@@ -3,7 +3,7 @@
  * Main script file for index.htm
  */
 
-(function($){
+;(function($){
   
   // onload function
   $(function() {
