@@ -8,9 +8,10 @@
 // the index page
 @import "_index.scss";
 
+// chips interface static styles
+@import "_chips.scss";
+
 // game stuff
 @import "_game-interface.scss";
 @import "_sample-game.scss";
-
-// chips interface static styles
-@import "_chips.scss";
+@import "_blackjack.scss";

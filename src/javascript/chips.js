@@ -10,14 +10,26 @@ window["Chips"] = function Chips(initial) {
     { value: 25,  cssColor: '#000', cssBackground: '#0c0', selectedBackground: 'yellow' },
     { value: 100, cssColor: '#fd0', cssBackground: '#222', selectedBackground: 'yellow' }
   ];
+  this.chipStacks = $(this.types.map(function(v){
+    return createStack(v.value, 0);
+  }));
   this.stacks = {}
-  this.types.forEach(function(element, index, value){
-    this.stacks[element.value] = 0;
+  this.types.forEach(function(e){
+    this.stacks[e.value] = 0;
   }, this)
   this.split(this.winnings);
 }
 
 Chips.prototype = new Bets();
+
+function createStack(v, c) {
+  var c = c || 0;
+  var $stack = $("<div></div>")
+    .addClass('stack')
+    .attr('data-value', v)
+    .attr('data-count', c)
+  return $stack[0];
+}
 
 /**
  * Chips.prototype.split
@@ -42,55 +54,64 @@ Chips.prototype.split = function (amount) {
  * Updates the user interface with current values.
  */
 Chips.prototype.update = function() {
+  var $stacks = $(".stack", this.container);
   var stacks = this.stacks; // jquery provides no [this] context in .each
   
-  // update the data-value attribtues in the winnnig stacks with internal stack count
-  $("#winnings .stack", this.container).each(function() {
-    var $this = $(this);
-    var value = $this.attr('data-value');
-    var count = stacks[value]
-    $this.attr('data-count', count)
+  // update the data-count attribute with internal stack count
+  $stacks.each(function() {
+    $(this).attr('data-count', stacks[$(this).attr('data-value')])
   });
   
   // perform css fixes assuming the new values
-  this.fix();
+  this.fix($stacks);
 }
 
 /**
  * Chips.prorotype.fix
- * Performs fixes for things that can't be done with CSS
- * ( p.s., full support for calc, attr and masking would be welcome here)
+ * Performs fixes for things that can't be done with static CSS
+ * 
+ * @param els
+ *  jQuery of '.stack' elements to fix
+ * 
+ * @remarks
  * There is a magic number used throughout this, 9 -- it is the height of a chip.
  */
-Chips.prototype.fix = function() {
+Chips.prototype.fix = function(els) {
 
   // fix up the heights of the elements based on data-count
-  $('.stack', this.container).each(function() {
-    var $this = $(this);
-    var count = $this.attr('data-count');
-    $this.css('height', ((--count) * 9) + 'px')
-      .html('<span class="value">'+$this.attr('data-value')+'</span>')
+  els.each(function() {
+    // set up the height based on count, and add the date-value to an inner span.
+    $(this).css('height', (($(this).attr('data-count') - 1) * 9) + 'px')
+      .html('<span class="value">'+$(this).attr('data-value')+'</span>')
   });
-  
+}
 
-  var stack_siblings = $('.stack-group').children().size()
-    
-  // set up z-index and top positioning for stacks, also use this loop to count chips
-  var chip_count = 0;
-  $('.stack-group .stack', this.container).each(function() {
-    var $this = $(this);
-    var index = $this.index();
-    chip_count += parseInt($this.attr('data-count'));
-    $(this)
-      .css('top', (index * 9) + 'px')
-      .css('zIndex', stack_siblings - index);
+/** 
+ * Chips.prototype.fixStackGroups
+ * Performs fixes to stack groups that can't be done with static CSS
+ *
+ * @param stackGroups 
+ *  jQuery of '.stack-group' elements to fix
+ *
+ * @remarks 
+*  Magic number 9 is height of chip, 30 is "just right" for proper height
+ */
+Chips.prototype.fixStackGroups = function(stackGroups) {
+  stackGroups.each(function(){
+    var chip_count = 0;
+    var siblings = $(this).children().filter(function(){
+      return $(this).css('display') === 'none';
+    });
+    $('.stack', this).each(function(){
+      var $stack = $(this);
+      var index = $stack.index();
+      $(this)
+        .css('top', (index * 9) + 'px')
+        .css('zIndex', 100 - index);
+      chip_count += parseInt($stack.attr('data-count'));
+    });
+    $(this).css('height', (30 + (chip_count * 9)) + 'px')
   });
-  
-  // ensure height of stack group is set properly.
-  // height of absolutly positioned pseudoelements is not taken into account.
-  $('.stack-group').css('height', ((chip_count * 9)) + 'px')
-  
-  
 }
 
 
@@ -100,13 +121,22 @@ Chips.prototype.fix = function() {
  * 
  * @param callback
  *  Function to call once a valid bet has been set.
+ * 
+ * @param targets
+ *  jQuery of elements that can accept the bets.
  */
-
-Chips.prototype.start = function(callback) {
+Chips.prototype.start = function(callback, $targets) {
+  $('.bet-interface, #bets-interface')
+    .on('dragstart', '.stack', {bets:this}, chipDragStart)
+    .on('dragenter', '.stack-group', {bets:this}, chipDragEnter)
+    .on('dragleave', '.stack-group', {bets:this}, chipDragLeave)
+    .on('drop', '.stack-group' ,{bets:this}, chipDragDrop)
+    .on('dragover', '.stack-group', {bets:this}, chipDragOver)
+    .on('dragend', '.stack', {bets:this}, chipDragEnd);
+  $('.stack', this.container).attr('draggable', true)
+  $targets.addClass('stack-group')
   this.callback = callback;
-  $("#current-bet-interface").css('display', '');
-  $("#winnings .stack", this.container).on("click", {bets:this}, winningChipClick);
-  $(".stack-group", this.container).on("click", '.stack', {bets:this}, pendingChipClick);
+  this.targets = $targets;
 }
 
 /**
@@ -114,32 +144,172 @@ Chips.prototype.start = function(callback) {
  * Used to signify a bet has been set.  Must call callback set in 'start'.
  * 
  * @remarks 
- *  This is a jQuery event. Assuming e.data.bets includes a reference to [this]
+ *  This is a jQuery event. Assuming e.data.game includes a reference to the game
+ *  The game should also have a reference back to [this] via 'bets'
  *
  */
-
 Chips.prototype.finish = function(e) {
-  var chips = e.data.bets;
-  $pendingChips = $('.stack-group .stack', this.container);
-  $betsError = $("#bet-error", this.container);
-  if ($pendingChips.size() === 0) {
+  /* this is all broken with advent of drag/drop chips
+     need to iterate over [this].targets to perform validation
+
+  var game = e.data.game;
+  var chips = game.bets;
+  var $betsError = $("#bet-error", chips.container);
+  var pendingValue = 0;
+
+  // iterate over the spots and count the number of chips (children) to get current bet.
+  chips.targets.each(function(){
+    $(this).children.each(function(){
+      pendingValue += $(this).attr('data-count') * $(this).attr('data-value')
+    })
+  })
+
+  if (pendingValue === 0) {
+    // provide an error if no chips have been bet in any spot.
     $betsError.html("You must select some chips to bet!")
   }
   else {
+    // otherwise, set up the currentBet value, remove from winnings & call the callback.
     $betsError.html("");
-    var pendingChipValues = 0;
-    $pendingChips.each(function() {
-      pendingChipValues += $(this).attr('data-count') * $(this).attr('data-value');
-    });
-    $("#current-bet-interface").css('display', 'none');
-    $("#winnings .stack", this.container).off("click", winningChipClick);
-    $(".stack-group", this.container).off("click", pendingChipClick);
-    $(".stack-group").empty();
     chips.currentBet = pendingChipValues;
     chips.winnings -= pendingChipValues;
     chips.callback.call();
-    chips.callback = null;
+    // also perform cleanup of event listeners, properties, etc.
+    chips.clean();
   }
+  */
+}
+
+/**
+ * chipDragStart
+ * This fires when a draggable element (.stack) has started a drag event
+ * 
+ */
+function chipDragStart (e) {
+  // this is a jQuery event. Grab the originalEvent to get at 'dataTransfer' and other fun stuff
+  var ev = e.originalEvent;
+  var $target = $(this);
+
+  // get details about how many chips they are dragging and the stack value
+  // the quantity calculation is weird and will fail because of the circular nature of the chips - works if dragging the middle (sorta)
+  // TODO:  Fix bug in IE11 where the quantity can return one too many, resulting in broken shit.
+  var offsetY = (ev.offsetY || ev.clientY - $target.offset().top);
+  var chipQuantity = offsetY < 9 ? 1 : Math.ceil((offsetY - 3) / 9)
+  var chipValue = $target.attr('data-value');
+
+  // we also want to save this element for later use in the drop event.
+  e.data.bets.dragSrc = $target;
+
+  // IE doesnt support setDragImage so do some feature detection here to avoid JS errors
+  if("setDragImage" in DataTransfer.prototype) {
+    // make a clone of the event target, make some slight changes to to it based on where the user clicked the element
+    // and do a quick insert so it works with setDragImage and remove before next repaint via requestAnimationFrame.
+    var $dragImage = $target.clone(false)
+      .attr('data-count', chipQuantity)
+      .css('position', 'absolute')
+      .css('left', ev.pageX)
+      .css('top', ev.pageY)
+      .css('zIndex', '-100')
+      .appendTo(document.body)
+    e.data.bets.fix($dragImage)
+    window.requestAnimationFrame(function(){$dragImage.remove();})
+    ev.dataTransfer.setDragImage($dragImage[0], 0, 0);
+  }
+
+  // set up the dragging values, including the image above and the allowed effect.
+  // need to send some sort of data otherwise firefox doesnt start the drag
+  ev.dataTransfer.effectAllowed = 'move';
+  ev.dataTransfer.setData('Text', JSON.stringify({
+    quantity: chipQuantity,
+    value: chipValue
+  }));
+}
+
+/**
+ * chipDragEnter
+ * This fires when the mouse enters a .stack-group element during drag event.
+ */
+function chipDragEnter (e) {
+  this.classList.add('over');  
+}
+
+/**
+ * chipDragOver
+ * This fires when the mouse is hovering a .stack-group element during drag event
+ *
+ * @remarks
+ * Using jQuery event delegation ensures this only fires for .stack-group.
+*  Setting dropEffect and calling preventDefault allows elements to be dragged here.
+ */
+function chipDragOver (e) {
+  e.originalEvent.dataTransfer.dropEffect = 'move';
+  e.preventDefault();
+  return false;
+}
+
+
+/**
+ * chipDragLeave
+ * This fires when the mouse leaves a .stack-group during a drag event
+ */
+function chipDragLeave (e) {
+  this.classList.remove('over');
+
+}
+
+/**
+ * chipDragDrop
+ * This fires when an element is dropped during a drag event
+ *
+ * @remarks
+ * This will update the data-count values of the source and target of the drop
+ * Calling @preventDefault ensures we don't navigate away from the current page.
+ */
+function chipDragDrop (e) {
+
+  // make sure the browser doesn't redirect...
+  e.preventDefault();
+
+  // grab data that was set in the dragstart event
+  var data = JSON.parse(e.originalEvent.dataTransfer.getData('Text'));
+
+  // find the right stack for the drop
+  var $stack = $('.stack[data-value="' + data.value +'"]', this);
+  if($stack.size() > 0) {
+    // add the dragging quantity to the data-count attribute
+    var oldCount = parseInt($stack.attr('data-count'));
+    $stack.attr('data-count', oldCount + data.quantity);
+  }
+  else {
+    // if the stack doesn't exit, create and append it - make sure it's draggable
+    $stack = $(createStack(data.value, data.quantity))
+      .attr('draggable', true)
+      .appendTo(this);
+  }
+
+  // decrement the data-count on the source stack by however many
+  // also, remove the element if data-count equals 0. 
+  var $source = $(e.data.bets.dragSrc)
+  var newCount = parseInt($source.attr('data-count')) - data['quantity'];
+  $source.attr('data-count', newCount);
+  $source.filter('[data-count="0"]').remove();
+
+  // perform any css fixes to the changed stacks.
+  this.classList.remove('over');  
+  e.data.bets.fix($stack.add($source));
+  e.data.bets.fixStackGroups(e.data.bets.targets);
+}
+
+/**
+ * chipDragEnd
+ * This fires when the user releases their mouse regardless of whether drop was successful
+ * 
+ * @remarks
+ * Remove the dragSrc reference on e.data.bets, that is, [this]
+ */
+function chipDragEnd (e) {
+  this.classList.remove('over');
+  e.data.bets.dragSrc = null;
 }
 
 /**
@@ -163,55 +333,41 @@ Chips.prototype.win = function (winning) {
  * This gets called when a user leaves the game with a pending bet operation.
  */
 Chips.prototype.abort = function() {
-  this.currentBet = null;
-  this.callback = null;
-  $("#current-bet-interface").css('display', 'none');
-  $("#winnings .stack", this.container).off("click", winningChipClick);
-  $(".stack-group", this.container).off("click", pendingChipClick);
+  this.clean();
 }
 
+
+/**
+ * Chips.prototype.clean
+ * Performs cleanup of properties/listeners after a finish or abort.
+ */
+Chips.prototype.clean = function() {
+  $('.stack', this.container).add(this.targets)
+    .attr('draggable', false)
+    .off('dragstart', chipDragStart)
+    .off('dragenter', chipDragEnter)
+    .off('dragleave', chipDragLeave)
+    .off('drop', chipDragDrop)
+    .off('dragover', chipDragOver)
+    .off('dragend', chipDragEnd)
+  this.currentBet = null;
+  this.callback = null;
+  this.targets = null;
+}
 
 /**
  * Chips.prototype.output
  * Provides user interface for the GameInterface
  */
 Chips.prototype.output = function() {
-
-  // we can't dig too deep otherwise uglifyjs has troubles
-  // declare the chip stacks here to avoid going too deep
-  var $chips = this.types.map(function(currentValue, index, array){
-    var $stack = $("<div></div>")
-      .addClass('stack')
-      .attr('data-value', currentValue.value)
-      .attr('data-count', 0)
-    return $stack;
-  });
-  
   var bets = this;
   var $bets = $("<fieldset id='bets-interface'></fieldset>")
-      .append("<legend>Betting Interface</legend>")
-      .append( function () { 
-        var ret = $("<div id='bets-winnings'>Your winnings: </div>")
-          .append(function () {
-            return $("<div id='winnings'></div>").append ($chips);
-          });
-        return ret;
-      })
-      .append( function () {
-        var ret = $("<div id='current-bet-interface'></div>")
-          .css('display', 'none')
-          .append("<div id='bet-message'>Click chips above to bet them. Click finished once ready.</div>")
-          .append("<div class='stack-group'></div>")
-          .append(function() {
-            var ret = $("<button id='finish-bet'>Finished</button>")
-              .on('click', {bets:bets}, bets.finish);
-            return ret;
-          })
-          .append("<div id='bet-error'></div>");
-                  
-        return ret;
-      });
-  return $bets[0];
+      .append("<legend>Your Winnings</legend>")
+      .append('<div class="stack-group"></div>')
+      .append("<div id='bet-error'></div>")
+  this.chipStacks.appendTo($bets.find('.stack-group'));
+  this.container = $bets[0]
+  return this.container;
 }
 
 /**
@@ -239,57 +395,4 @@ Chips.prototype.css = function() {
   return css;
 }
 
-/**
- * winningChipClick
- * jQuery click handler for the winning chips stack.
- * 
- * This is attached when a pending bet is called and detatched when finished or upon abort
- * Clicking a chip adds it to the pending stack and removes it from winning chips.
- *
- * @param e 
- *  Event handler, assumes :
- *   e.data.bets - reference to Bets object
- */
-function winningChipClick (e) {
-  var $this = $(this);
-  var value = $this.attr('data-value');
-  e.data.bets.stacks[value]--;
-  
-  var $stack = $('.stack-group .stack[data-value="'+value+'"]', this.container)
-  if ($stack.size() === 0) {
-    $("<div></div>")
-      .attr('data-value', value)
-      .attr('data-count', '1')
-      .addClass('stack')
-      .appendTo('.stack-group');
-  }
-  else {
-    $stack.attr('data-count', parseInt($stack.attr('data-count')) + 1);
-  }
-  e.data.bets.update();
-}
-
-/**
- * pendingChipClick
- * jQuery click handler for the pending chips stack.
- * 
- * This is attached when a pending bet is called and detatched when finished or upon abort
- *
- * @param e 
- *  Event handler, assumes :
- *   e.data.bets - reference to Bets object
- */
-function pendingChipClick (e) {
-  var $this = $(this);
-  var value = $this.attr('data-value');
-  var count = $this.attr('data-count');
-  e.data.bets.stacks[value]++;
-  $this.attr('data-count', --count);
-  if(count === 0 ) {
-    $this.remove();
-  }
-  e.data.bets.update();
-}
-
-
-})(jQuery)
+})(jQuery);

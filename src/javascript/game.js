@@ -81,7 +81,7 @@
       .addClass('betting');
     
     $('.status', container)
-      .html("Enter a bet to continue...");
+      .html("Drag chips here and press Finish.");
     
     // let the bets interface know we are waiting for a bet
     // when it's finished make the game's interface visible
@@ -94,7 +94,7 @@
       $('.status', container)
         .html("Current bet is " + bets.currentBet);
         
-    });
+    }, $('.spot', container) );
     
   }
   /**
@@ -138,6 +138,15 @@
         var ret= $("<div class='interface'></div>")
           .append($("<button>Win</button>").click({game: game, winning:true}, game.end))
           .append($("<button>Lose</button>").click({game: game, winning:false}, game.end));
+        return ret;
+      })
+      .append( function () {
+        var ret = $("<div class='bet-interface'></div>")
+          .append("<div class='spot'></div>")
+          .append("<div class='spot'></div>")
+          .append("<div class='spot'></div>")
+          .append("<div class='spot'></div>")
+          .append($("<button>Finish</button>").click({game:game}, game.bets.finish))
         return ret;
       })
     ; // end jQuery chain
