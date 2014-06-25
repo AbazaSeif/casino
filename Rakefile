@@ -63,7 +63,8 @@ def javascript
   require 'uglifier'
   
   js_path = $SOURCE_PATH.join('javascript')
-  min_file = $JS_DIR + 'page.js'
+  source_file = $JS_DIR + 'page.js'
+  min_file = $JS_DIR + 'page.min.js'
   map_file = $JS_DIR + 'page.js.map'
   files = [
     'array.js',
@@ -82,11 +83,10 @@ def javascript
   src = ''
   files.each do |f|
     src += File.read js_path + f
-    cp js_path + f, $JS_DIR
   end
 
   minified, sourcemap = Uglifier.compile_with_map(src,
-    :source_filename => files,
+    :source_filename => source_file,
     :output_filename => min_file.basename,
     :source_root => "")
   
@@ -94,11 +94,14 @@ def javascript
   # need to replace 'source:[[ list, of, files]]' with 'source:[list, of, files]'
   
   output = File.open(map_file, 'w')
-  output << sourcemap.gsub(/\[\[(.+?)\]\]/, '[\1]')
+  output << sourcemap
   
+  output = File.open(source_file, 'w')
+  output << src;
+
   output = File.open(min_file, 'w')
   output << minified
-  output << "\n//# sourceMappingURL=#{map_file.basename}\n"
+  output << "\n//# sourceMappingURL=#{source_file}\n"
   
   print "Done!\n"
 end
