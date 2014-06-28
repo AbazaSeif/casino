@@ -19,3 +19,6 @@ $RECYCLE.BIN/
 
 # ignore the build directory
 build
+
+# ignore grunt dependancies
+node_modules
