@@ -6,10 +6,10 @@
 			"folder_exclude_patterns": ["build", ".sass-cache", "node_modules"]
 		}
 	],
-    "build_systems":
-    [
-        {
-        	"name": "Grunt",
+	"build_systems":
+	[
+		{
+			"name": "Grunt",
 			"cmd": ["grunt.cmd --no-color"],
 			"file_regex": "^(...*?):([0-9]*):?([0-9]*)",
 			"working_dir" : "$file_path",
@@ -17,10 +17,10 @@
 				"shell":true,
 				"path": "c:\\cygwin64\\bin;C:\\Program Files\\nodejs;%APPDATA%\\npm"
 			}
-        }
-    ],
+		}
+	],
   	"settings":
-  	{    
-    	"build_on_save": 1
-    }
+  	{	
+		"build_on_save": 1
+	}
 }
