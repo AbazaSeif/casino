@@ -37,7 +37,7 @@ module.exports = function(grunt) {
             flatten: true,
             cwd: '<%= dirs.javascript %>/',
             src: '*.js',
-            dest: '<%= dirs.build %>/js/'
+            dest: '<%= dirs.build %>/js/src/'
           }
         ]
       }
@@ -59,23 +59,22 @@ module.exports = function(grunt) {
       options: {
         banner: '<%= banner %>',
         sourceMap: true,
-        sourceMapName: '<%= dirs.build %>/js/page.map.js',
-        sourceMapRoot: 'grr'
+        sourceMapName: '<%= dirs.build %>/js/page.map.js'
       },
       dist: {
         files: {
           '<%= dirs.build%>/js/page.min.js': [
-            '<%= dirs.build%>/js/array.js',
-            '<%= dirs.build%>/js/lib.js',
-            '<%= dirs.build%>/js/sprite.js',
-            '<%= dirs.build%>/js/bets.js',
-            '<%= dirs.build%>/js/chips.js',
-            '<%= dirs.build%>/js/game.js',
-            '<%= dirs.build%>/js/game-interface.js',
-            '<%= dirs.build%>/js/blackjack.js',
-            '<%= dirs.build%>/js/hilow.js',
-            '<%= dirs.build%>/js/solitaire.js',
-            '<%= dirs.build%>/js/index.js'
+            '<%= dirs.build%>/js/src/array.js',
+            '<%= dirs.build%>/js/src/lib.js',
+            '<%= dirs.build%>/js/src/sprite.js',
+            '<%= dirs.build%>/js/src/bets.js',
+            '<%= dirs.build%>/js/src/chips.js',
+            '<%= dirs.build%>/js/src/game.js',
+            '<%= dirs.build%>/js/src/game-interface.js',
+            '<%= dirs.build%>/js/src/blackjack.js',
+            '<%= dirs.build%>/js/src/hilow.js',
+            '<%= dirs.build%>/js/src/solitaire.js',
+            '<%= dirs.build%>/js/src/index.js'
           ]
         }
       }
@@ -92,7 +91,7 @@ module.exports = function(grunt) {
           trace: true
         }
       }
-    },
+    }
   });
 
   // These plugins provide necessary tasks.
