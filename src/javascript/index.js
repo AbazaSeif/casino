@@ -1,49 +1,55 @@
+/* global Chips, GameInterface, Game, Blackjack */
 /**
  * @file index.js
  * Main script file for index.htm
+ * @requires Chips
+ * @requires GameInterface
+ * @requires Game
+ * @requires BlackJack
  */
+'use strict';
 
-;(function($){
-  
+(function ($) {
+
   // onload function
-  $(function() {
-  
+  $(function () {
+
     // remove the no-js classes
     $('.no-js').removeClass('no-js');
 
     // temporary
-    var game1 = function() {
-      this.name = "sample-game-1";
-      this.label = "Sample Game #1"
+    var Game1 = function () {
+      this.name = 'sample-game-1';
+      this.label = 'Sample Game #1';
     };
-    game1.prototype = new Game();
-    
+    Game1.prototype = new Game();
+
     // this shows how to call a super-method
-    game1.prototype.css = function() {
+    Game1.prototype.css = function () {
       // do the unholy javascript prototype dance
       var game = Object.getPrototypeOf(this);
       var css = Object.getPrototypeOf(game).css.call(this);
       // add something
-      return css + "#" + this.name + "{color:blue}";
-    }
-    
-    var game2 = function() {
-      this.name = "sample-game-2";
-      this.label = "Sample Game #2"
+      return css + '#' + this.name + '{color:blue}';
     };
-    game2.prototype = new Game();
+
+    var Game2 = function () {
+      this.name = 'sample-game-2';
+      this.label = 'Sample Game #2';
+    };
+    Game2.prototype = new Game();
 
     // create a new game interface.
-    var game = new GameInterface({
-      'output': $("#output")[0],
+    var gameInterface = new GameInterface({
+      'output': $('#output')[0],
       'games': [
-        new game1(),
-        new game2(),
+        new Game1(),
+        new Game2(),
         new Blackjack()
       ],
       'bets': new Chips(144)
     });
-    
+
   });
 
-})(jQuery)
+})(jQuery);
