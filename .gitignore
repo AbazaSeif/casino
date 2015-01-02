@@ -22,3 +22,6 @@ build
 
 # ignore grunt dependancies
 node_modules
+
+#sublime
+*sublime*
