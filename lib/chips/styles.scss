@@ -1,0 +1,107 @@
+
+@import "../styles/_mixins.scss";
+
+$stack_top: 26px;
+$stack_bottom: 13px;
+$stack_width: 75px;
+
+@mixin stack($dir) {
+  $mask: 'img/mask.svg#chip-mask-' + $dir;
+  $background: 'img/' + $dir + '.png';
+  $webkitMask: 'img/mask-' + $dir + '-webkit.png';
+  content: '';
+  position: absolute;
+  width: $stack_width;
+  background:    url(#{$background}) no-repeat unquote($dir) center;
+  -webkit-mask:  url(#{$webkitMask}) no-repeat unquote($dir) center;
+  mask:          url(#{$mask});
+  @if $dir == 'bottom' {
+    bottom: -$stack_bottom;
+    height: $stack_bottom;
+  }
+  @if $dir == 'top' {
+    top: -$stack_top;
+    height: $stack_top;
+  }
+
+}
+
+#bets-interface{
+  margin-bottom:12pt;
+  .stack-group {
+    min-height: 50px;
+    border: 1px solid white;
+  }
+}
+
+
+.stack {
+
+  // ensure those with a count of zero are not visible
+  // use !important here because display is set with more specific selectors below with stack-group
+  // this data-count=0 rule should be trumping everything and I don't want to write it again below.
+
+  &[data-count='0']{
+    display:none !important;
+  }
+
+  // set up the text 3d transformation for the text on the chip
+  &[data-value] span.value {
+    display: block;
+    position: relative;
+    top: -$stack_top + 3px;
+    text-align: center;
+    @include transform(rotateX(50deg) rotateZ(21deg));
+    pointer-events: none;
+  }
+
+  // for those with a count, we add in the special background/masks
+  &[data-count] {
+    position:relative;
+    background: url('img/middle.png') repeat center ($stack_top + 1);
+    width: $stack_width;
+    margin: $stack_top 0 $stack_bottom;
+    display:inline-block;
+    vertical-align: bottom;
+
+    // add before/after pseudo-selectors for the top/bottom backgrounds/masks
+    &:before { @include stack('top'); }
+    &:after  { @include stack('bottom'); }
+  }
+}
+
+
+.bet-interface {
+
+  // special styling for stackgroup context
+  // these are displayed block and have special margin considerations
+  //  - the top has no margin-bottom,
+  //  - middle elements have no margins, and
+  //  - bottom has no margin-top
+  //  - when it is an only-child, set same as generic 'stack' margins as above
+  //
+  .stack-group {
+    margin-top: $stack_top;
+    margin-bottom: $stack_bottom;
+    .stack[data-count] {
+      display: block;
+      &:first-child { margin-bottom: 0 }
+      &:nth-last-child(n+2):nth-child(n+2) { margin: 0 }
+      &:last-child { margin-top: 0 }
+      &:only-child { margin: $stack_top 0 $stack_bottom; }
+    }
+  }
+
+  .spot {
+    display: inline-block;
+    margin: 20px;
+    width: 100px;
+    min-height: 100px;
+    border: 1px solid blue;
+    vertical-align: top;
+
+    &.over {
+      border-style: dotted;
+    }
+  }
+}

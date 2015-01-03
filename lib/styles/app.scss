@@ -1,8 +1,12 @@
+
+@import "_mixins.scss";
+@import "_fonts.scss";
+
 /* for non-js browsers we want to make this as obvious as possible */
 .no-js { display:none; }
 noscript { color:red; font-weight:bold; }
 
-body{ 
+body{
   font-size: 14pt;
   line-height: 12pt;
   width: 790px;
@@ -18,11 +22,11 @@ header {
   h1, h2 {
     margin: 0;
   }
-  
+
   h1 {
     font: normal 48pt "Monoton", sans-serif;
     color: red;
-    text-shadow: 0 0 80px red, 0 0 30px firebrick, 0 0 6px darkred;    
+    text-shadow: 0 0 80px red, 0 0 30px firebrick, 0 0 6px darkred;
     span {
       &:nth-child(1) { @include animation(flicker 10s   steps(1) infinite); }
       &:nth-child(2) { @include animation(flicker 200ms steps(1) infinite); }

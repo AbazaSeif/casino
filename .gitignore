@@ -18,7 +18,7 @@ $RECYCLE.BIN/
 .sass-cache
 
 # ignore the build directory
-build
+dist
 
 # ignore grunt dependancies
 node_modules
