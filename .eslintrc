@@ -3,7 +3,8 @@
     'browser': true
   },
   'globals': {
-    '$': false
+    '$': false,
+    'ejs': false
   },
   'rules': {
     'brace-style': [2, 'stroustrup', { 'allowSingleLine': true }],

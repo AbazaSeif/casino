@@ -21,6 +21,7 @@
     "grunt-sass": "^0.17.0",
     "grunt-webmake": "^0.1.2",
     "webmake": "^0.3.36",
-    "webmake-sass": "git://github.com/acdaniel/webmake-sass.git"
+    "webmake-ejs": "git://github.com/tswaters/webmake-ejs.git",
+    "webmake-sass": "git://github.com/tswaters/webmake-sass.git"
   }
 }

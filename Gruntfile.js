@@ -25,6 +25,11 @@ module.exports = function (grunt) {
           'src': '*.*',
           'dest': 'dist/img/'
         }, {
+          'cwd': 'components/ejs/',
+          'src': 'ejs.min.js',
+          'expand': true,
+          'dest': 'dist/vendor/'
+        }, {
           'cwd': 'components/jquery/dist/',
           'src': 'jquery.min.js',
           'expand': true,
@@ -52,7 +57,7 @@ module.exports = function (grunt) {
     },
     'webmake': {
       'options': {
-        'ext': ['sass']
+        'ext': ['sass', 'ejs']
       },
       'dist': {
         'files': {
@@ -77,7 +82,7 @@ module.exports = function (grunt) {
     },
     'watch': {
       'scripts': {
-        'files': ['README.md', 'Gruntfile.js', 'lib/**/*.js', 'lib/**/*.scss'],
+        'files': ['README.md', 'Gruntfile.js', 'lib/**/*.js', 'lib/**/*.scss', 'lib/**/*.ejs'],
         'tasks': allTasks
       }
     }
