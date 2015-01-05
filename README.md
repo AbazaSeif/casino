@@ -6,6 +6,6 @@ Very basic card games in javascript.
 Sure, if you could call it that...
 
     npm install
+    bower install
     grunt
     open up build/index.htm and enjoy
-

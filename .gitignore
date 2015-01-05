@@ -20,8 +20,9 @@ $RECYCLE.BIN/
 # ignore the build directory
 dist
 
-# ignore grunt dependancies
+# ignore dependancies
 node_modules
+components
 
 #sublime
 *sublime*
