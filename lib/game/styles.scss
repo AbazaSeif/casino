@@ -1,7 +1,10 @@
 
 .game {
 
+  display:none;
+
   &.init {
+    display: inherit;
     .interface{ display:none; }
     .start{ display:inherit; }
     .bet-interface { display: none; }
@@ -10,20 +13,20 @@
   &.betting {
     display: inherit;
     .interface { display: none; }
-    .start { display: none; }
+    .start-game { display: none; }
     .bet-interface { display: block; }
   }
 
   &.playing {
     display: inherit;
     .interface { display: inherit; }
-    .start { display: none; }
+    .start-game { display: none; }
     .bet-interface { display: none; }
   }
 
   &.bust {
     display:inherit;
-    .start { display: none; }
+    .start-game { display: none; }
     .interface { display: none; }
     .bet-interface { display:none; }
   }

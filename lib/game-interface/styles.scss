@@ -1,8 +1,10 @@
 
-.game {
+#game-choose {
 
-  display:none;
+  &.choosing #game-starter { display: inherit; }
+  &.choosing #game-ender { display: none; }
 
-  &.init { display:inherit; }
+  &.playing #game-starter { display: none; }
+  &.playing #game-ender { display: inherit; }
 
 }
