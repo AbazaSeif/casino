@@ -9,12 +9,13 @@ module.exports = function (grunt) {
     'sass',
     'ejs',
     'webmake',
-    'uglify'
+    'uglify',
+    'jsdoc'
   ];
 
   grunt.initConfig({
     'clean': {
-      'dist': 'dist'
+      'dist': ['dist', 'docs']
     },
     'copy': {
       'dist': {
@@ -80,6 +81,17 @@ module.exports = function (grunt) {
         }
       }
     },
+    'jsdoc': {
+      'dist': {
+        'src': ['README.md', 'lib/**/*.js'],
+        'options': {
+          'destination': 'docs',
+          'private': false
+          //'template': 'node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
+          //'configure': 'jsdoc.conf.json'
+        }
+      }
+    },
     'watch': {
       'scripts': {
         'files': ['README.md', 'Gruntfile.js', 'lib/**/*.js', 'lib/**/*.scss', 'lib/**/*.ejs'],
@@ -93,6 +105,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ejs');
+  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-webmake');
 

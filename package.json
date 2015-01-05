@@ -18,6 +18,7 @@
     "grunt-contrib-uglify": "^0.5.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-ejs": "^0.2.0",
+    "grunt-jsdoc": "git://github.com/krampstudio/grunt-jsdoc.git#0.6.x",
     "grunt-sass": "^0.17.0",
     "grunt-webmake": "^0.1.2",
     "webmake": "^0.3.36",
