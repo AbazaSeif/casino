@@ -1,0 +1,12 @@
+{
+  "sample-game.name": "Sample Game",
+  "sample-game.bet-instructions": "Drag chips here and press Finish.",
+  "sample-game.bet-count": "Current bet is %d",
+  "sample-game.bust": "You have no money - get out of here you lazy bum!",
+  "sample-game.start": "Press start to continue",
+  "sample-game.win": "You win!",
+  "sample-game.lose": "You lose....",
+  "sample-game.buttons.lose": "Lose",
+  "sample-game.buttons.win": "Win",
+  "sample-game.buttons.start": "Start"
+}

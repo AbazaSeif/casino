@@ -5,7 +5,7 @@
   },
   'globals': {
     '$': false,
-    'ejs': false
+    'i18n': false
   },
   'rules': {
     'brace-style': [2, 'stroustrup', { 'allowSingleLine': true }],
