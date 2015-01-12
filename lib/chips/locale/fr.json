@@ -1,0 +1,5 @@
+{
+  "chips.errors.empty-bet": "Vous devez sélectionner quelques jetons pour parier !",
+  "chips.buttons.finish": "Finition",
+  "chips.winning-label": "Vos gains"
+}

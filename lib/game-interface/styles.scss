@@ -1,9 +1,11 @@
 
 #game-choose {
 
+  &.choosing #game-selection { display:inherit; }
   &.choosing #game-starter { display: inherit; }
   &.choosing #game-ender { display: none; }
 
+  &.playing #game-selection { display:none; }
   &.playing #game-starter { display: none; }
   &.playing #game-ender { display: inherit; }
 

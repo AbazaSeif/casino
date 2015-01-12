@@ -1,5 +1,5 @@
 {
-  "chips.errors.empty-bet": "'You must select some chips to bet!'",
+  "chips.errors.empty-bet": "You must select some chips to bet!",
   "chips.buttons.finish": "Finish",
   "chips.winning-label": "Your Winnings"
 }
