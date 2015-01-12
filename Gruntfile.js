@@ -6,8 +6,6 @@ module.exports = function (grunt) {
   var allTasks = [
     'clean',
     'copy',
-    'sass',
-    'ejs',
     'webmake',
     'uglify',
     'jsdoc'
@@ -22,12 +20,18 @@ module.exports = function (grunt) {
         'files': [{
           'expand': true,
           'flatten': true,
+          'cwd': 'static',
+          'src': 'app.html',
+          'dest': 'dist/'
+        }, {
+          'expand': true,
+          'flatten': true,
           'cwd': 'static/images',
           'src': '*.*',
           'dest': 'dist/img/'
         }, {
-          'cwd': 'components/ejs/',
-          'src': 'ejs.min.js',
+          'cwd': 'components/i18next/',
+          'src': 'i18next.js',
           'expand': true,
           'dest': 'dist/vendor/'
         }, {
@@ -38,31 +42,13 @@ module.exports = function (grunt) {
         }]
       }
     },
-    'sass': {
-      'dist': {
-        'files': {
-          'dist/css/app.css': ['lib/styles/app.scss']
-        }
-      }
-    },
-    'ejs': {
-      'dist': {
-        'src': ['lib/app.ejs'],
-        'dest': 'dist/app.html',
-        'ext': 'html',
-        'options': {
-          'jsFile': 'js/app.js',
-          'cssFile': 'css/app.css'
-        }
-      }
-    },
     'webmake': {
       'options': {
         'ext': ['sass', 'ejs']
       },
       'dist': {
         'files': {
-          'dist/js/app.js': ['lib/app.js']
+          'dist/js/app.js': ['lib/app/app.js']
         }
       }
     },
@@ -104,9 +90,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-ejs');
   grunt.loadNpmTasks('grunt-jsdoc');
-  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-webmake');
 
   grunt.registerTask('default', allTasks);
