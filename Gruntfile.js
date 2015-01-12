@@ -85,7 +85,7 @@ module.exports = function (grunt) {
     },
     'watch': {
       'scripts': {
-        'files': ['README.md', 'Gruntfile.js', 'lib/**/*.js', 'lib/**/*.scss', 'lib/**/*.ejs'],
+        'files': ['README.md', 'Gruntfile.js', 'lib/**/*.js', 'lib/**/*.json', 'lib/**/*.scss', 'lib/**/*.ejs'],
         'tasks': allTasks
       }
     }
