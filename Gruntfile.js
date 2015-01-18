@@ -31,7 +31,7 @@ module.exports = function (grunt) {
           'dest': 'dist/img/'
         }, {
           'cwd': 'components/i18next/',
-          'src': 'i18next.js',
+          'src': 'i18next.min.js',
           'expand': true,
           'dest': 'dist/vendor/'
         }, {
