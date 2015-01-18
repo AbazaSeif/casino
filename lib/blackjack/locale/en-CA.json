@@ -1,0 +1,21 @@
+{
+  "blackjack.name": "Blackjack",
+  "blackjack.labels.dealersCards": "Dealer's Cards",
+  "blackjack.labels.usersCards": "Your Cards",
+  "blackjack.buttons.hit": "Hit",
+  "blackjack.buttons.stand": "Stand",
+  "blackjack.buttons.double": "Double",
+  "blackjack.buttons.surrender": "Surrender",
+  "blackjack.buttons.insurance": "Insurance",
+  "blackjack.buttons.split": "Split",
+  "blackjack.buttons.start": "Start",
+  "blackjack.buttons.leave": "Leave",
+  "blackjack.messages.user_bust": "You busted!",
+  "blackjack.messages.dealer_bust": "The dealer busted!",
+  "blackjack.messages.action_start": "The dealer deals 1 down, 1 up for himself and 2 up to you.",
+  "blackjack.messages.action_double": "You doubled the bet, it is now %s.<br> You take one more card and stand.",
+  "blackjack.messages.action_hitstand": "You can hit or stand.",
+  "blackjack.messages.action_finished": "You can start a new game or leave the table.",
+  "blackjack.messages.win": "You won %d!",
+  "blackjack.messages.lose": "You lost %d..."
+}

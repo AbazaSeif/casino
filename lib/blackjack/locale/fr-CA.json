@@ -1,0 +1,19 @@
+{
+  "blackjack.name": "Vingt-et-un",
+  "blackjack.buttons.hit": "Frapper",
+  "blackjack.buttons.stand": "Supporter",
+  "blackjack.buttons.double": "Double",
+  "blackjack.buttons.surrender": "Capitulation",
+  "blackjack.buttons.insurance": "Assurance",
+  "blackjack.buttons.split": "Divisé",
+  "blackjack.buttons.start": "Début",
+  "blackjack.buttons.leave": "Laisser",
+  "blackjack.messages.user_bust": "Vous éclaté!",
+  "blackjack.messages.dealer_bust": "Le concessionnaire éclaté!",
+  "blackjack.messages.action_start": "Le croupier distribue une baisse , une pour lui-même et deux à vous.",
+  "blackjack.messages.action_double": "Vous a doublé la mise , il est maintenant %s.<br>Vous prenez une carte de plus et stand.",
+  "blackjack.messages.action_hitstand": "Vous pouvez frapper ou se tenir debout .",
+  "blackjack.messages.action_finished": "Vous pouvez commencer un nouveau jeu ou quitter la table.",
+  "blackjack.messages.win": "Vous avez gagné %d!",
+  "blackjack.messages.lose": "Vous avez perdu %d..."
+}
