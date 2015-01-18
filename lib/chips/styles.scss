@@ -70,38 +70,28 @@ $stack_width: 75px;
   }
 }
 
-
-.bet-interface {
-
-  // special styling for stackgroup context
-  // these are displayed block and have special margin considerations
-  //  - the top has no margin-bottom,
-  //  - middle elements have no margins, and
-  //  - bottom has no margin-top
-  //  - when it is an only-child, set same as generic 'stack' margins as above
-  //
-  .stack-group {
-    margin-top: $stack_top;
-    margin-bottom: $stack_bottom;
-    .stack[data-count] {
-      display: block;
-      &:first-child { margin-bottom: 0 }
-      &:nth-last-child(n+2):nth-child(n+2) { margin: 0 }
-      &:last-child { margin-top: 0 }
-      &:only-child { margin: $stack_top 0 $stack_bottom; }
-    }
+.stack-group.vertical {
+  .stack[data-count] {
+    display: block;
+    &:first-child { margin-bottom: 0 }
+    &:nth-last-child(n+2):nth-child(n+2) { margin: 0 }
+    &:last-child { margin-top: 0 }
+    &:only-child { margin: $stack_top 0 $stack_bottom; }
   }
+}
 
-  .spot {
-    display: inline-block;
-    margin: 20px;
-    width: 100px;
-    min-height: 100px;
-    border: 1px solid blue;
-    vertical-align: top;
+.spot-container {
+  display:table;
+  margin: 20px 0;
+}
 
-    &.over {
-      border-style: dotted;
-    }
+.spot {
+  display: table-cell;
+  width: 100px;
+  height: 100px;
+  border: 1px solid blue;
+  vertical-align: bottom;
+  &.over {
+    border-style: dotted;
   }
 }
