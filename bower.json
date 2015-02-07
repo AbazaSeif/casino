@@ -16,7 +16,6 @@
   ],
   "dependencies": {
     "jquery": "~2.1.3",
-    "i18next": "https://github.com/tswaters/i18next.git",
-    "jquery.letterize": "https://github.com/tswaters/jquery.letterize.git"
+    "i18next": "https://github.com/tswaters/i18next.git"
   }
 }

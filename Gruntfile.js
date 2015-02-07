@@ -35,11 +35,6 @@ module.exports = function (grunt) {
           'expand': true,
           'dest': 'dist/vendor/'
         }, {
-          'cwd': 'components/jquery.letterize/dist/',
-          'src': 'jquery.letterize.min.js',
-          'expand': true,
-          'dest': 'dist/vendor/'
-        }, {
           'cwd': 'components/jquery/dist/',
           'src': 'jquery.min.js',
           'expand': true,
