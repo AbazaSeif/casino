@@ -7,8 +7,7 @@ module.exports = function (grunt) {
     'clean',
     'copy',
     'webmake',
-    'uglify',
-    'jsdoc'
+    'uglify'
   ];
 
   grunt.initConfig({
@@ -67,17 +66,6 @@ module.exports = function (grunt) {
         }
       }
     },
-    'jsdoc': {
-      'dist': {
-        'src': ['README.md', 'lib/**/*.js'],
-        'options': {
-          'destination': 'docs',
-          'private': false
-          //'template': 'node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
-          //'configure': 'jsdoc.conf.json'
-        }
-      }
-    },
     'watch': {
       'scripts': {
         'files': ['README.md', 'Gruntfile.js', 'lib/**/*.js', 'lib/**/*.json', 'lib/**/*.scss', 'lib/**/*.ejs'],
@@ -90,7 +78,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-webmake');
 
   grunt.registerTask('default', allTasks);

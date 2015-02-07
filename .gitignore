@@ -19,7 +19,6 @@ $RECYCLE.BIN/
 
 # ignore the build directory
 dist
-docs
 
 # ignore dependancies
 node_modules
