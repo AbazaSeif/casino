@@ -1,0 +1,55 @@
+
+@mixin enabled {
+  opacity: 1.0;
+  pointer-events: auto;
+}
+
+@mixin disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+}
+
+.game {
+
+  display:none;
+
+  &.betting {
+    display: inherit;
+    .controls, .row { display: none; }
+    .bet-interface { display: block; }
+  }
+
+  &.playing {
+    display: inherit;
+    .controls, .row { display: block; }
+    .bet-interface { display: none; }
+  }
+
+  &.bust {
+    display:inherit;
+    .controls, .row { display: block; }
+    .bet-interface { display:none; }
+  }
+
+  .bet-interface {
+    button {
+      display:block;
+    }
+  }
+}
+
+           #insurance { @include disabled(); }
+.insurable #insurance { @include enabled(); }
+
+           #split     { @include disabled(); }
+.splitable #split     { @include enabled(); }
+
+
+.card-stack .card {
+  display: inline-block;
+}
+
+.user .card-stack .card:nth-child(n+2) {
+  margin-left: -80px;
+}
