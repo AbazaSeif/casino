@@ -1,5 +1,7 @@
 {
   "chips.errors.empty-bet": "You must select some chips to bet!",
   "chips.buttons.finish": "Finish",
-  "chips.winning-label": "Your Winnings"
+  "chips.winning-label": "Your Winnings",
+  "chips.bet-instructions": "Drag chips here and press Finish.",
+  "chips.bet-count": "Current bet is %d"
 }
