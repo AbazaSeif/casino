@@ -1,16 +1,13 @@
 
-.game {
-
-  display:none;
+#game-container--sample-game-1,
+#game-container--sample-game-2 {
 
   &.init {
-    display: inherit;
     .interface { display:none; }
     .commands { display:inherit; }
   }
 
   &.playing {
-    display: inherit;
     .interface { display: inherit; }
     .commands { display: none; }
   }
