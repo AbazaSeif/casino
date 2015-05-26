@@ -1,7 +1,6 @@
 {
   "sample-game-1.name": "Jeu de l'échantillon #1",
   "sample-game-2.name": "Jeu de l'échantillon #2",
-  "sample-game.bust": "Vous ne avez pas d'argent - de sortir de là, vous fainéant!",
   "sample-game.start": "Appuyez sur start pour continuer",
   "sample-game.win": "Vous avez gagné!",
   "sample-game.lose": "Vous perdez....",

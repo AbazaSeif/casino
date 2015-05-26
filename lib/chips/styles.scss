@@ -26,6 +26,21 @@ $stack_width: 75px;
 
 }
 
+.game {
+  .bet-interface { display: none; }
+
+  &.betting {
+    .commands { display: none !important; }
+    .interface { display: none !important; }
+    .bet-interface { display: block; }
+  }
+
+  &.bust {
+    .interface { display: none !important; }
+    .commands { display: none !important; }
+  }
+}
+
 #bets-interface {
   margin-bottom:12pt;
   .stack-group {

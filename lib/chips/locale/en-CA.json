@@ -3,5 +3,6 @@
   "chips.buttons.finish": "Finish",
   "chips.winning-label": "Your Winnings",
   "chips.bet-instructions": "Drag chips here and press Finish.",
-  "chips.bet-count": "Current bet is %d"
+  "chips.bet-count": "Current bet is %d",
+  "chips.bust": "You have no money - get out of here you lazy bum!",
 }

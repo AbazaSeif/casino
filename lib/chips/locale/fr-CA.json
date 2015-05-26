@@ -3,5 +3,6 @@
   "chips.buttons.finish": "Finition",
   "chips.winning-label": "Vos gains",
   "chips.bet-instructions": "Faites glisser les puces ici et appuyez sur Terminer.",
-  "chips.bet-count": "Pari actuel est %d"
+  "chips.bet-count": "Pari actuel est %d",
+  "chips.bust": "Vous ne avez pas d'argent - de sortir de là, vous fainéant!",
 }

@@ -7,28 +7,12 @@
     display: inherit;
     .interface { display:none; }
     .commands { display:inherit; }
-    .bet-interface { display: none; }
-  }
-
-  &.betting {
-    display: inherit;
-    .interface { display: none; }
-    .commands { display: none; }
-    .bet-interface { display: block; }
   }
 
   &.playing {
     display: inherit;
     .interface { display: inherit; }
     .commands { display: none; }
-    .bet-interface { display: none; }
-  }
-
-  &.bust {
-    display:inherit;
-    .interface { display: none; }
-    .commands { display: none; }
-    .bet-interface { display:none; }
   }
 
   .bet-interface {
